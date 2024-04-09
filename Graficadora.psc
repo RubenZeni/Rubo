@@ -3,14 +3,14 @@ Algoritmo Graficadora_2_1
 	Definir sup como Cadena;
 	Definir ctr como Caracter;
 	
-	Escribir "¿Cuántas líneas desea dibujar?";
+	Escribir "Â¿CuÃ¡ntas lÃ­neas desea dibujar?";
 	Leer lista;
 	
-	Escribir "¿Desea que las líneas se superpongan?";
+	Escribir "Â¿Desea que las lÃ­neas se superpongan?";
 	Leer sup;
 	sup <- Minusculas(sup);
 	
-	Dimension Matriz[100,100] // Matriz para graficar líneas, tamaño arbitrario.
+	Dimension Matriz[100,100] // Matriz para graficar lÃ­neas, tamaÃ±o arbitrario.
 	
 	Repetir
 		Segun sup
@@ -38,7 +38,7 @@ Algoritmo Graficadora_2_1
 					FinPara
 					
 					// Ingreso de coordenadas
-					Escribir "LINEA N°",z,"";
+					Escribir "LINEA NÂ°",z,"";
 					Escribir "Ingrese las coordenadas del punto inicial (X1,Y1)";
 					Escribir Sin Saltar "X1: ";
 					Leer x1;
@@ -60,18 +60,18 @@ Algoritmo Graficadora_2_1
 					deltaX <- x2 - x1;
 					deltaY <- y2 - y1;
 					
-					// Si deltaX es 0, dibuja una línea vertical
+					// Si deltaX es 0, dibuja una lÃ­nea vertical
 					Si deltaX = 0
 						Para i <- y1 Hasta y2 Con Paso 1
 							Matriz[i, x1] <- "O";
 						FinPara
-						// Si deltaY es 0, dibuja una línea horizontal
+						// Si deltaY es 0, dibuja una lÃ­nea horizontal
 					Sino
 						Si deltaY = 0
 							Para i <- x1 Hasta x2 Con Paso 1
 								Matriz[y1, i] <- "O";
 							FinPara
-						Sino // Dibujar una línea diagonal
+						Sino // Dibujar una lÃ­nea diagonal
 							Si deltaX > deltaY
 								deltaY <- deltaY * 2;
 								deltaX <- deltaX * 2;
@@ -112,7 +112,7 @@ Algoritmo Graficadora_2_1
 					Escribir "Presione una tecla para continuar...";
 					Esperar Tecla;
 				FinPara
-			"si" o "sí":
+			"si" o "sÃ­":
 				Dimension x1[lista];
 				Dimension y1[lista];
 				Dimension x2[lista];
@@ -134,7 +134,7 @@ Algoritmo Graficadora_2_1
 					FinPara
 					
 					// Ingreso de coordenadas
-					Escribir "LINEA N°",z,"";
+					Escribir "LINEA NÂ°",z,"";
 					Escribir "Ingrese las coordenadas del punto inicial (x1,y1)";
 					Escribir Sin Saltar "X1: ";
 					Leer x1[z];
@@ -156,18 +156,18 @@ Algoritmo Graficadora_2_1
 					deltaX <- x2[z] - x1[z];
 					deltaY <- y2[z] - y1[z];
 					
-					// Si deltaX es 0, dibuja una línea vertical
+					// Si deltaX es 0, dibuja una lÃ­nea vertical
 					Si deltaX = 0
 						Para i <- y1[z] Hasta y2[z] Con Paso 1
 							Matriz[i, x1[z]] <- "O";
 						FinPara
-						// Si deltaY es 0, dibuja una línea horizontal
+						// Si deltaY es 0, dibuja una lÃ­nea horizontal
 					Sino
 						Si deltaY = 0
 							Para i <- x1[z] Hasta x2[z] Con Paso 1
 								Matriz[y1[z], i] <- "O";
 							FinPara
-						Sino // Dibujar una línea diagonal
+						Sino // Dibujar una lÃ­nea diagonal
 							Si deltaX > deltaY
 								deltaY <- deltaY * 2;
 								deltaX <- deltaX * 2;
@@ -211,5 +211,5 @@ Algoritmo Graficadora_2_1
 			De Otro Modo:
 				Escribir "No se reconoce la respuesta ingresada.";
 		FinSegun
-	Hasta Que sup = "no" o sup = "si" o sup = "sí"
+	Hasta Que sup = "no" o sup = "si" o sup = "sÃ­"
 FinAlgoritmo
