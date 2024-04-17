@@ -1,4 +1,4 @@
-Algoritmo Graficadora_2_1
+Algoritmo Graficadora
 	Definir x1,y1,x2,y2,deltaX,deltaY,x,e,i,lista como Entero;
 	Definir sup como Cadena;
 	Definir ctr como Caracter;
