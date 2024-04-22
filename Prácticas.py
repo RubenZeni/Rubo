@@ -50,7 +50,7 @@ def tecla_presionada(tecla):
                 return True
         else:
             return False
-def holaMundo_auto(cadena):
+def holaMundo(cadena):
     if not cadena:
         cadena = 0
     pos = cadena
@@ -62,7 +62,7 @@ def holaMundo_auto(cadena):
         if pos < 9:
             if tecla_presionada(None): # Si se presionó una tecla...
                 if teclas[tecla - 1] == teclas_HM[cadena]: # Si la última letra es "h"...
-                    holaMundo_auto(cadena + 1, pos + 1)
+                    holaMundo(cadena + 1, pos + 1)
                     return
                 else:
                     print("Mal ahí, seguí intentando...")
