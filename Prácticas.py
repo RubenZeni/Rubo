@@ -127,9 +127,6 @@ def buscarPila(pila, elemento):
 
 # buscarPila(pila, input("Buscar elemento: "))
 
-# distancia = buscarPila(pila, "c")
-# print(f"Si se quitan los últimos {distancia} elementos de la pila, se podrá acceder al elemento buscado.")
-
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Búsqueda recursiva de un elemento en una pila con distancia entre el último elemento y el buscado, o ubicación del elemento dentro de la pila.
@@ -155,7 +152,7 @@ def buscarPilaDistancia(pila, elemento):
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#
+# Suprimir números impares de una pila de manera recursiva.
 def supImpares(pila):
     if pila.size() == 0:
         return
@@ -168,7 +165,37 @@ def supImpares(pila):
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Hola Mundo
+# Un Hola Mundo que se escribe solo recorriendo una a una las letras del abecedario.
+def holaMundoAuto(cadena):
+    if not cadena:
+        cadena = 0
+    pos = cadena
+    teclas = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] # Mapeo de letras
+    frases_HM = ["", "H", "Ho", "Hol", "Hola ", "Hola m", "Hola mu", "Hola mun", "Hola mund", "Hola mundo"]
+    teclas_HM = ["h", "o", "l", "a", "m", "u", "n", "d", "o"]
+    tecla = 0 # Letra inicial
+    while True:
+        if pos < 9:
+            if teclas[tecla - 1] == teclas_HM[cadena]: # Si la última letra es "h"...
+                holaMundoAuto(cadena + 1) # Recursividad
+                return
+        else:
+            break
+            
+        print(frases_HM[pos], teclas[tecla], sep="")
+        if tecla < 25: # Para repetir el abcedario después de la Z
+            tecla += 1
+        else:
+            tecla = 0
+            
+        time.sleep(0.04) # Esperar 0.3 segundo
+    return frases_HM[9]
+
+# holaMundo_auto(0)
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Este Hola Mundo es como el automático, con la diferencia de que en este se debe presionar una tecla para detener el abecedario, debiendo quedar la letra correspondiente a la posición del cursor en la palabra "Hola Mundo". Es algo así como un juego de Hola Mundo.
 import time
 def tecla_presionada(tecla):
     import msvcrt
@@ -182,7 +209,7 @@ def tecla_presionada(tecla):
                 return True
         else:
             return False
-def holaMundo(cadena):
+def holaMundoJuego(cadena):
     if not cadena:
         cadena = 0
     pos = cadena
@@ -194,7 +221,7 @@ def holaMundo(cadena):
         if pos < 9:
             if tecla_presionada(None): # Si se presionó una tecla...
                 if teclas[tecla - 1] == teclas_HM[cadena]: # Si la última letra es "h"...
-                    holaMundo(cadena + 1, pos + 1)
+                    holaMundoJuego(cadena + 1, pos + 1)
                     return
                 else:
                     print("Mal ahí, seguí intentando...")
@@ -216,32 +243,4 @@ def holaMundo(cadena):
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-def holaMundo_auto(cadena):
-    if not cadena:
-        cadena = 0
-    pos = cadena
-    teclas = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] # Mapeo de letras
-    frases_HM = ["", "H", "Ho", "Hol", "Hola ", "Hola m", "Hola mu", "Hola mun", "Hola mund", "Hola mundo"]
-    teclas_HM = ["h", "o", "l", "a", "m", "u", "n", "d", "o"]
-    tecla = 0 # Letra inicial
-    while True:
-        if pos < 9:
-            if teclas[tecla - 1] == teclas_HM[cadena]: # Si la última letra es "h"...
-                holaMundo_auto(cadena + 1) # Recursividad
-                return
-        else:
-            break
-            
-        print(frases_HM[pos], teclas[tecla], sep="")
-        if tecla < 25: # Para repetir el abcedario después de la Z
-            tecla += 1
-        else:
-            tecla = 0
-            
-        time.sleep(0.04) # Esperar 0.3 segundo
-    return frases_HM[9]
-
-# holaMundo_auto(0)
-
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+# Juego matemático de agilidad mental. Tras un conteo regresivo aparece una operación en pantalla, entonces el usuario deberá ingresar el resultado de ésta, si no lo hace antes de un tiempo indicado se toma como incorrecto, en cuyo caso el jugador perderá una vida y deberá volver a intentar. Si las vidas llegan a 0 entonces piede. Si ingresa el resultado correcto y a tiempo entonces podrá continuar con otra opeación un poco más difícil, de esta manera irá subiendo de nivel. Más pronto sea ingresado el resultado correcto, más puntos obtendrá el usuario. Los puntos se acumulan y al llegar al final del juego son mostrados en pantalla. El final del juego aún no está definido.
