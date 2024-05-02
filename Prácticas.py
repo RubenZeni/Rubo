@@ -244,3 +244,57 @@ def holaMundoJuego(cadena):
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Juego matemático de agilidad mental. Tras un conteo regresivo aparece una operación en pantalla, entonces el usuario deberá ingresar el resultado de ésta, si no lo hace antes de un tiempo indicado se toma como incorrecto, en cuyo caso el jugador perderá una vida y deberá volver a intentar. Si las vidas llegan a 0 entonces piede. Si ingresa el resultado correcto y a tiempo entonces podrá continuar con otra opeación un poco más difícil, de esta manera irá subiendo de nivel. Más pronto sea ingresado el resultado correcto, más puntos obtendrá el usuario. Los puntos se acumulan y al llegar al final del juego son mostrados en pantalla. El final del juego aún no está definido.
+# Pienso escribir cada día un poco más del código, haciendo versiones distintas del juego cada vez. Hasta lograr el enunciado de arriba.
+from random import randint
+
+def asignarValores(nivel):
+    operador = {1: "+", 2: "-", 3: "*", 4: "/"}
+    if nivel == 1:
+        numero1, numero2, op = randint(1, 500), randint(1, 500), randint(1, 2)
+        if op == 1:
+            resultado = numero1 + numero2
+        elif op == 2:
+            resultado = numero1 - numero2
+    elif nivel == 2:
+        numero1, numero2, op = randint(20, 500), randint(1, 10), randint(3, 4)
+        if op == 3:
+            resultado = numero1 * numero2
+        elif op == 4:
+            resultado = numero1 / numero2
+    elif nivel == 3:
+        numero1, numero2, op = randint(20, 500), randint(1, 10), randint(3, 4)
+        if op == 3:
+            resultado = numero1 * numero2
+        elif op == 4:
+            resultado = numero1 / numero2
+        numero1, op = randint(20, 500), randint(1, 2)
+        if op == 1:
+            resultado = resultado + numero1
+        elif op == 2:
+            resultado = resultado - numero1
+    return resultado, numero1, numero2, operador[op]
+
+def juegoMatematico(nivel, vidas):
+    if not nivel:
+        nivel = 1
+    if not vidas and vidas != 0:
+         vidas = 3
+    if nivel > 3:
+        return "Felicidades! Llegaste al final del juego."
+    else:
+        if vidas > 0:
+            resultado, numero1, numero2, operador = asignarValores(nivel)
+            print(f"Nivel: {nivel} | Vidas: {vidas}.")
+            entrada = float(input(f"{numero1} {operador} {numero2} = "))
+            if entrada == resultado:
+                print("Resultado correcto. Bien hecho!")
+                juegoMatematico(nivel + 1, vidas)
+            else:
+                if vidas > 1:
+                    print("Resultado incorrecto. Suerte la próxima!")
+                juegoMatematico(nivel, vidas - 1)
+    if vidas <= 0:
+        print("Te quedaste sin vidas. Fin del juego.")
+        return
+
+juegoMatematico(1, 3)
