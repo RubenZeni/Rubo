@@ -165,89 +165,105 @@ def supImpares(pila):
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Un Hola Mundo que se escribe solo recorriendo una a una las letras del abecedario.
-def holaMundoAuto(cadena):
-    if not cadena:
-        cadena = 0
-    pos = cadena
-    teclas = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] # Mapeo de letras
+# Un Hola Mundo que se escribe solo recorriendo una a una las letras del abecedario. Puede recibir opcionalmente el tiempo que pasa entre cada letra que se muestra en pantalla.
+def holaMundoAuto(tiempo = 0.04, pos = 0):
+    import time
+    indice = pos
+    letras = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] # Mapeo de letras
     frases_HM = ["", "H", "Ho", "Hol", "Hola ", "Hola m", "Hola mu", "Hola mun", "Hola mund", "Hola mundo"]
-    teclas_HM = ["h", "o", "l", "a", "m", "u", "n", "d", "o"]
-    tecla = 0 # Letra inicial
+    letras_HM = ["h", "o", "l", "a", "m", "u", "n", "d", "o"]
+    letra = 0 # Letra inicial
     while True:
-        if pos < 9:
-            if teclas[tecla - 1] == teclas_HM[cadena]: # Si la última letra es "h"...
-                holaMundoAuto(cadena + 1) # Recursividad
+        if indice < 9:
+            if letras[letra - 1] == letras_HM[pos]: # Si la última letra es "h"...
+                holaMundoAuto(tiempo ,pos + 1) # Recursividad
                 return
         else:
             break
             
-        print(frases_HM[pos], teclas[tecla], sep="")
-        if tecla < 25: # Para repetir el abcedario después de la Z
-            tecla += 1
+        print(frases_HM[indice], letras[letra], sep="")
+        if letra < 25: # Para repetir el abcedario después de la Z
+            letra += 1
         else:
-            tecla = 0
+            letra = 0
             
-        time.sleep(0.04) # Esperar 0.3 segundo
+        time.sleep(tiempo) # Esperar tiempo indicado. Predeterminado: 0.04 seg.
     return frases_HM[9]
 
-# holaMundo_auto(0)
+# holaMundoAuto()
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Este Hola Mundo es como el automático, con la diferencia de que en este se debe presionar una tecla para detener el abecedario, debiendo quedar la letra correspondiente a la posición del cursor en la palabra "Hola Mundo". Es algo así como un juego de Hola Mundo.
-import time
-def tecla_presionada(tecla):
-    import msvcrt
-    if msvcrt.kbhit():
-        if not tecla:
-            if msvcrt.getch():
+# Función que detecta si una tecla ha sido presionada y retorna bool. Puede recibir opcionalemte un caracter y así verificar si la tecla presionada coincide con dicho caracter.
+def teclaPresionada(caracter):
+    import msvcrt # Este módulo creo que funciona únicamente en Windows. No puedo asegurar que funcione en otros SO
+    if msvcrt.kbhit(): # Si existe una "pulsación" de tecla esperando en el búfer
+        if not caracter: # Si la función no recibió un caracter específico
+            if msvcrt.getch(): # Si se puede recuperar la tecla presionada
                 return True
             else:
                 return False
-        elif msvcrt.getwch() == tecla:
+        elif msvcrt.getwch() == caracter: # Si la función sí recibió un caracter específico
                 return True
         else:
             return False
-def holaMundoJuego(cadena):
-    if not cadena:
-        cadena = 0
-    pos = cadena
-    teclas = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] # Mapeo de letras
-    frases_HM = ["", "H", "Ho", "Hol", "Hola ", "Hola m", "Hola mu", "Hola mun", "Hola mund", "Hola mundo"]
-    teclas_HM = ["h", "o", "l", "a", "m", "u", "n", "d", "o"]
-    tecla = 0 # Letra inicial
+
+def presionarTecla(caracter = None): # Esta función sirve para probar teclaPresionada()
     while True:
-        if pos < 9:
-            if tecla_presionada(None): # Si se presionó una tecla...
-                if teclas[tecla - 1] == teclas_HM[cadena]: # Si la última letra es "h"...
-                    holaMundoJuego(cadena + 1, pos + 1)
-                    return
+        if teclaPresionada(caracter):
+            if caracter != None:
+                print(f"Se presionó la tecla {caracter}.")
+            else:
+                print("Se presionó una tecla.")
+            break
+        else:
+            print("Sin cambios.")
+
+# presionarTecla()
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Este es como el holaMundoAuto(), con la diferencia de que en este se debe presionar una tecla para detener el abecedario, debiendo quedar la letra correspondiente a la posición del cursor en la palabra "Hola Mundo". Es algo así como un juego del holaMundoAuto(), de ahí el nombre.
+
+def holaMundoJuego(tiempo = 0.2, pos = 0):
+    import time
+    indice = pos
+    letras = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] # Mapeo de letras
+    frases_HM = ["", "H", "Ho", "Hol", "Hola ", "Hola m", "Hola mu", "Hola mun", "Hola mund", "Hola mundo"]
+    letras_HM = ["h", "o", "l", "a", "m", "u", "n", "d", "o"]
+    letra = 0 # Letra inicial
+    while True:
+        if indice < 9:
+            if teclaPresionada(None): # Si se presionó una tecla...
+                if letras[letra - 1] == letras_HM[pos]: # Si la última letra es "h"...
+                    holaMundoJuego(tiempo, pos + 1)
+                    return "Bien hecho!"
                 else:
                     print("Mal ahí, seguí intentando...")
-                    tecla = 0
+                    letra = 0
                     time.sleep(1) # Esperar 1 segundo
         else:
             break
             
-        print(frases_HM[pos], teclas[tecla], sep="")
-        if tecla < 25: # Para repetir el abcedario después de la Z
-            tecla += 1
+        print(frases_HM[indice], letras[letra], sep="")
+        if letra < 25: # Para repetir el abcedario después de la Z
+            letra += 1
         else:
-            tecla = 0
+            letra = 0
             
-        time.sleep(0.3) # Esperar 0.3 segundo
+        time.sleep(tiempo) # Esperar tiempo indicado. Predeterminado: 0.2 seg
     return frases_HM[9]
 
-# holaMundo(0)
+print(holaMundoJuego())
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Función recursiva que imprime la cadena ingresada como parámetro de la misma manera en que holaMundoAuto() lo haría. Solo se admiten caracteres alfanuméricos en cadena. ¿Por qué recursiva? Porque sí, porque queda linda :)
-def escribirAuto(cadena, pos = 0):
-    pos_aux = pos
-    letras = [" ", "a", "á", "b", "c", "d", "e", "é", "f", "g", "h", "i", "í", "j", "k", "l", "m", "n", "o", "ó", "p", "q", "r", "s", "t", "u", "ú", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", ":", "-", "_", "(", ")", "¿", "?", "¡", "!", "#", "$", "%", "+", "*", "/"] # Mapeo de letras
-    frases = [""]
+# Función recursiva que imprime la cadena ingresada como parámetro de la misma manera en que holaMundoAuto() lo haría. Se admiten caracteres alfanuméricos y unos cuantos símbolos. ¿Por qué recursiva? Porque sí, porque queda linda :)
+def escribirAuto(cadena, tiempo = 0.02, pos = 0): # Recibe una cadena y la posicion de la letra a buscar en letras
+    import time
+    indice = pos # Hay lugares en donde pos por poco no es el correcto, por eso lo almaceno antes en indice (como un pos_aux)
+    letras = [" ", "a", "á", "b", "c", "d", "e", "é", "f", "g", "h", "i", "í", "j", "k", "l", "m", "n", "o", "ó", "p", "q", "r", "s", "t", "u", "ú", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", ":", "-", "_", "(", ")", "¿", "?", "¡", "!", "#", "$", "%", "+", "*", "/"] # Mapeo de caracteres
+    frases = [""] # Declaración de la lista donde se almacenará la cadena por partes. Siendo f la posición de cada elemento en frases y g la posición de cada elemento en cadena, empezando con f(0)
     extra = -1
     while True:
         if extra < len(cadena) + 1:
@@ -264,20 +280,20 @@ def escribirAuto(cadena, pos = 0):
         listaCadena.append(cadena[elemento])
     letra = 0 # Letra inicial
     while True:
-        if pos_aux < len(listaCadena):
+        if indice < len(listaCadena):
             if letras[letra - 1] == f"{listaCadena[pos]}".lower(): # Si la última letra es correcta...
-                escribirAuto(cadena, pos + 1) # Recursividad
+                escribirAuto(cadena, tiempo, pos + 1) # Recursividad
                 return ""
         else:
             break
         
-        print(frases[pos_aux], letras[letra], sep="")
+        print(frases[indice], letras[letra], sep="")
         if letra < len(letras) - 1: # Para repetir el abcedario después de la Z
             letra += 1
         else:
             letra = 0
           
-        time.sleep(0.02) # Esperar 0.2 segundo
+        time.sleep(tiempo) # Esperar tiempo indicado. Predeterminado: 0.02 seg
 
 # print(escribirAuto("+¿Para el Junior? / -Sí, creo. / +Perfecto! Gracias :)"))
 
