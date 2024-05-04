@@ -92,7 +92,7 @@ class Stack:
     def size(self):
         return len(self.__elements)
 
-def llenarPila(n):
+def llenarPila():
     pila = Stack()
     pila.push("a")
     pila.push("b")
@@ -243,6 +243,46 @@ def holaMundoJuego(cadena):
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+# Función recursiva que imprime la cadena ingresada como parámetro de la misma manera en que holaMundoAuto() lo haría. Solo se admiten caracteres alfanuméricos en cadena. ¿Por qué recursiva? Porque sí, porque queda linda :)
+def escribirAuto(cadena, pos = 0):
+    pos_aux = pos
+    letras = [" ", "a", "á", "b", "c", "d", "e", "é", "f", "g", "h", "i", "í", "j", "k", "l", "m", "n", "o", "ó", "p", "q", "r", "s", "t", "u", "ú", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", ":", "-", "_", "(", ")", "¿", "?", "¡", "!", "#", "$", "%", "+", "*", "/"] # Mapeo de letras
+    frases = [""]
+    extra = -1
+    while True:
+        if extra < len(cadena) + 1:
+            cadenita = ""
+            for elemento in range(0, extra):
+                cadenita += cadena[elemento]
+            if cadenita != "":
+                frases.append(cadenita)
+            extra += 1
+        else:
+            break
+    listaCadena = [cadena[0]]
+    for elemento in range(1, len(cadena)):
+        listaCadena.append(cadena[elemento])
+    letra = 0 # Letra inicial
+    while True:
+        if pos_aux < len(listaCadena):
+            if letras[letra - 1] == f"{listaCadena[pos]}".lower(): # Si la última letra es correcta...
+                escribirAuto(cadena, pos + 1) # Recursividad
+                return ""
+        else:
+            break
+        
+        print(frases[pos_aux], letras[letra], sep="")
+        if letra < len(letras) - 1: # Para repetir el abcedario después de la Z
+            letra += 1
+        else:
+            letra = 0
+          
+        time.sleep(0.02) # Esperar 0.2 segundo
+
+# print(escribirAuto("+¿Para el Junior? / -Sí, creo. / +Perfecto! Gracias :)"))
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 # Juego matemático de agilidad mental. Tras un conteo regresivo aparece una operación en pantalla, entonces el usuario deberá ingresar el resultado de ésta, si no lo hace antes de un tiempo indicado se toma como incorrecto, en cuyo caso el jugador perderá una vida y deberá volver a intentar. Si las vidas llegan a 0 entonces piede. Si ingresa el resultado correcto y a tiempo entonces podrá continuar con otra opeación un poco más difícil, de esta manera irá subiendo de nivel. Más pronto sea ingresado el resultado correcto, más puntos obtendrá el usuario. Los puntos se acumulan y al llegar al final del juego son mostrados en pantalla. El final del juego aún no está definido.
 # Pienso escribir cada día un poco más del código, haciendo versiones distintas del juego cada vez. Hasta lograr el enunciado de arriba.
 from random import randint
@@ -297,4 +337,4 @@ def juegoMatematico(nivel, vidas):
         print("Te quedaste sin vidas. Fin del juego.")
         return
 
-juegoMatematico(1, 3)
+# juegoMatematico(1, 3)
