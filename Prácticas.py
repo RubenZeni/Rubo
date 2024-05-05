@@ -1,5 +1,5 @@
 #  Se tiene un listado con los siguientes datos: Número de alumno (1 a n), número de materia (1 a m), nota (0 a 10). * El mismo número de alumno y de materia puede aparecer más de una vez. * El listado no está ordenado, ni necesariamente completo. Esto último quiere decir que puede ser que un alumno no haya cursado una o más materias, y por lo tanto no existan los datos correspondientes en el listado. Se pide: a- Crear una estructura bidimensional que almacene el promedio por materia de cada alumno e informarla asignándole en la impresión un guión en caso de faltar datos. b- Informar el porcentaje de alumnos que cursó cada materia y el promedio general por materia considerando los alumnos que la cursaron. c- Informar la cantidad de materias que cursó cada alumno y el promedio que obtuvo considerando las materias que cursó.
-def Ejercicio6():
+def analisisAlumnos():
     alumnos = []
     materias = []
     notas = []
@@ -71,7 +71,7 @@ def Ejercicio6():
             print(']')
         print()
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Pila - Recursividad
 class Stack:
@@ -110,7 +110,7 @@ def llenarPila():
 pila_aux = Stack()
 llenarPila()
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Búsqueda recursiva de un elemento en una pila.
 def buscarPila(pila, elemento):
@@ -127,7 +127,7 @@ def buscarPila(pila, elemento):
 
 # buscarPila(pila, input("Buscar elemento: "))
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Búsqueda recursiva de un elemento en una pila con distancia entre el último elemento y el buscado, o ubicación del elemento dentro de la pila.
 def buscarPilaDistancia(pila, elemento):
@@ -150,7 +150,7 @@ def buscarPilaDistancia(pila, elemento):
 # if distancia != -1:
 #     print(f"Si se quitan los últimos {distancia} elementos de la pila, se podrá acceder al elemento buscado.")
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Suprimir números impares de una pila de manera recursiva.
 def supImpares(pila):
@@ -163,7 +163,7 @@ def supImpares(pila):
         supImpares(pila)
         pila.push(temp)
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Un Hola Mundo que se escribe solo recorriendo una a una las letras del abecedario. Puede recibir opcionalmente el tiempo que pasa entre cada letra que se muestra en pantalla.
 def holaMundoAuto(tiempo = 0.04, pos = 0):
@@ -192,7 +192,7 @@ def holaMundoAuto(tiempo = 0.04, pos = 0):
 
 # holaMundoAuto()
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Función que detecta si una tecla ha sido presionada y retorna bool. Puede recibir opcionalemte un caracter y así verificar si la tecla presionada coincide con dicho caracter.
 def teclaPresionada(caracter):
@@ -221,7 +221,7 @@ def presionarTecla(caracter = None): # Esta función sirve para probar teclaPres
 
 # presionarTecla()
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Este es como el holaMundoAuto(), con la diferencia de que en este se debe presionar una tecla para detener el abecedario, debiendo quedar la letra correspondiente a la posición del cursor en la palabra "Hola Mundo". Es algo así como un juego del holaMundoAuto(), de ahí el nombre.
 
@@ -254,9 +254,9 @@ def holaMundoJuego(tiempo = 0.2, pos = 0):
         time.sleep(tiempo) # Esperar tiempo indicado. Predeterminado: 0.2 seg
     return frases_HM[9]
 
-print(holaMundoJuego())
+# print(holaMundoJuego())
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Función recursiva que imprime la cadena ingresada como parámetro de la misma manera en que holaMundoAuto() lo haría. Se admiten caracteres alfanuméricos y unos cuantos símbolos. ¿Por qué recursiva? Porque sí, porque queda linda :)
 def escribirAuto(cadena, tiempo = 0.02, pos = 0): # Recibe una cadena y la posicion de la letra a buscar en letras
@@ -297,60 +297,112 @@ def escribirAuto(cadena, tiempo = 0.02, pos = 0): # Recibe una cadena y la posic
 
 # print(escribirAuto("+¿Para el Junior? / -Sí, creo. / +Perfecto! Gracias :)"))
 
-# ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Juego matemático de agilidad mental. Tras un conteo regresivo aparece una operación en pantalla, entonces el usuario deberá ingresar el resultado de ésta, si no lo hace antes de un tiempo indicado se toma como incorrecto, en cuyo caso el jugador perderá una vida y deberá volver a intentar. Si las vidas llegan a 0 entonces piede. Si ingresa el resultado correcto y a tiempo entonces podrá continuar con otra opeación un poco más difícil, de esta manera irá subiendo de nivel. Más pronto sea ingresado el resultado correcto, más puntos obtendrá el usuario. Los puntos se acumulan y al llegar al final del juego son mostrados en pantalla. El final del juego aún no está definido.
 # Pienso escribir cada día un poco más del código, haciendo versiones distintas del juego cada vez. Hasta lograr el enunciado de arriba.
-from random import randint
 
-def asignarValores(nivel):
-    operador = {1: "+", 2: "-", 3: "*", 4: "/"}
-    if nivel == 1:
-        numero1, numero2, op = randint(1, 500), randint(1, 500), randint(1, 2)
-        if op == 1:
-            resultado = numero1 + numero2
-        elif op == 2:
-            resultado = numero1 - numero2
-    elif nivel == 2:
-        numero1, numero2, op = randint(20, 500), randint(1, 10), randint(3, 4)
-        if op == 3:
-            resultado = numero1 * numero2
-        elif op == 4:
-            resultado = numero1 / numero2
-    elif nivel == 3:
-        numero1, numero2, op = randint(20, 500), randint(1, 10), randint(3, 4)
-        if op == 3:
-            resultado = numero1 * numero2
-        elif op == 4:
-            resultado = numero1 / numero2
-        numero1, op = randint(20, 500), randint(1, 2)
-        if op == 1:
-            resultado = resultado + numero1
-        elif op == 2:
-            resultado = resultado - numero1
-    return resultado, numero1, numero2, operador[op]
+def juegoMatematico():
+    import random
+    import time
+    # Mensaje de bienvenida y explicación del juego
+    print("A continuación se mostrarán distintas operaciones que irán aumentando su dificultad con cada nivel. Si respondés bien subís de nivel, si respondés mal perdés una vida y tanto el nivel como la operación son los mismos. Tenés 5 segundos para ingresar el resultado, si una vez ingresado el tiempo expiró se toma como respuesta incorrecta.")
+    input("Presioná cualquier tecla para continuar...")
 
-def juegoMatematico(nivel, vidas):
-    if not nivel:
-        nivel = 1
-    if not vidas and vidas != 0:
-         vidas = 3
-    if nivel > 3:
-        return "Felicidades! Llegaste al final del juego."
-    else:
-        if vidas > 0:
-            resultado, numero1, numero2, operador = asignarValores(nivel)
-            print(f"Nivel: {nivel} | Vidas: {vidas}.")
-            entrada = float(input(f"{numero1} {operador} {numero2} = "))
-            if entrada == resultado:
-                print("Resultado correcto. Bien hecho!")
-                juegoMatematico(nivel + 1, vidas)
+    def generar_operacion(nivel): # Definir los límites de los números aleatorios según el nivel
+        if nivel <= 5: # Para los niveles 1 al 5, los números aleatorios están entre 1 y nivel*10
+            a = random.randint(1, nivel * 10)
+            b = random.randint(1, nivel * 10)
+            operador = random.choice(['+', '-']) if nivel > 2 else '+' # Aleatoriamente + o -, a partir del nivel 3, sino sólo +
+        elif nivel <= 10:
+            # Para los niveles 6 al 10, los números aleatorios están entre 1 y 10
+            a = random.randint(1, 10)
+            b = random.randint(1, 10)
+            operador = random.choice(['*', '/']) if nivel > 7 else '*'  # Aleatoriamente * o /, a partir del nivel 8, sino sólo *
+            while operador == '/' and a % b != 0: # Si el operador es división, asegurarse de que la división sea entera
+                a = random.randint(1, 10)
+                b = random.randint(1, 10)
+        else: # Para los niveles superiores a 10, se incluyen el resto de operadores (+, -, *, /)
+            a = random.randint(1, 10)
+            b = random.randint(1, 10)
+            operador = random.choice(['+', '-', '*', '/'])
+        
+        return f"{a} {operador} {b}" # Devolver la operación como una cadena de texto
+
+    def ingresarResultado(resultado): # Función para que el usuario ingrese el resultado de la operación
+        inicio = time.time()  # Tiempo de inicio
+        respuesta_usuario = input("Ingrese el resultado: ")  # El usuario ingresa su respuesta
+        fin = time.time()  # Tiempo de finalización
+
+        # Verificar si el usuario ingresó el resultado correcto
+        if fin - inicio > 5:  # Si el tiempo transcurrido es mayor a 5 segundos
+            if int(respuesta_usuario) != resultado: # Si además la respuesta es incorrecta (ambos se cumplen)
+                return -2
             else:
-                if vidas > 1:
-                    print("Resultado incorrecto. Suerte la próxima!")
-                juegoMatematico(nivel, vidas - 1)
-    if vidas <= 0:
-        print("Te quedaste sin vidas. Fin del juego.")
-        return
+                return -1
+        elif int(respuesta_usuario) == resultado:  # Si la respuesta es correcta
+            return 1
+        else: # Si la respuesta es incorrecta
+            return 0
 
-# juegoMatematico(1, 3)
+    vidas = 3  # Número inicial de vidas
+    nivel = 1  # Número inicial de nivel
+    operacion = ""  # Operación actual
+
+    while vidas > 0:  # Mientras el jugador tenga vidas
+        print("")  # Línea en blanco
+        print(f"Nivel: {nivel}")  # Nivel actual
+        print(f"Vidas: {vidas}")  # Cantidad de vidas restantes
+
+        if not operacion:  # Si no hay una operación actual generada
+            operacion = generar_operacion(nivel)  # Generar una nueva operación para el nivel actual
+        print(f"Operación: {operacion}")  # Imprimir la operación actual
+
+        resultado = ingresarResultado(eval(operacion))  # Obtener la respuesta del usuario y evaluarla
+        if resultado == -2:  # Si el tiempo expiró y la respuesta es incorrecta.
+            vidas -= 1  # Restar una vida
+            print("Respuesta incorrecta y iempo expirado.")  # Imprimir un mensaje indicando que ta todo mal
+            if vidas == 0:  # Si ya no quedan vidas
+                break  # Salir del bucle
+            respuesta = input("¿Desea salir? (s/n): ")  # Preguntar al usuario si desea salir
+            if respuesta.lower() == 's':  # Si el usuario desea salir
+                break  # Salir del bucle
+            elif respuesta.lower() == 'n':  # Si el usuario desea continuar
+                continue  # Continuar con la siguiente iteración del bucle
+        elif resultado == -1:  # Si el tiempo expiró
+            vidas -= 1  # Restar una vida
+            print("Tiempo expirado.")  # Imprimir un mensaje indicando que el tiempo expiró
+            if vidas == 0:  # Si ya no quedan vidas
+                break  # Salir del bucle
+            respuesta = input("¿Desea salir? (s/n): ")  # Preguntar al usuario si desea salir
+            if respuesta.lower() == 's':  # Si el usuario desea salir
+                break  # Salir del bucle
+            elif respuesta.lower() == 'n':  # Si el usuario desea continuar
+                continue  # Continuar con la siguiente iteración del bucle
+        elif resultado == 0:  # Si la respuesta es incorrecta
+            vidas -= 1  # Restar una vida
+            print("Respuesta incorrecta.")  # Imprimir un mensaje indicando que el tiempo expiró
+            if vidas == 0:  # Si ya no quedan vidas
+                break  # Salir del bucle
+            respuesta = input("¿Desea salir? (s/n): ")  # Preguntar al usuario si desea salir
+            if respuesta.lower() == 's':  # Si el usuario desea salir
+                break  # Salir del bucle
+            elif respuesta.lower() == 'n':  # Si el usuario desea continuar
+                continue  # Continuar con la siguiente iteración del bucle
+        elif resultado == 1:  # Si la respuesta es correcta
+            print("Respuesta correcta.")  # Imprimir un mensaje indicando que la respuesta es correcta
+            if vidas == 0:  # Si ya no quedan vidas
+                break  # Salir del bucle
+            respuesta = input("¿Desea salir? (s/n): ")  # Preguntar al usuario si desea salir
+            if respuesta.lower() == 's':  # Si el usuario desea salir
+                break  # Salir del bucle
+            elif respuesta.lower() == 'n':  # Si el usuario desea continuar
+                operacion = ""  # Reiniciar la operación para generar una nueva en el próximo ciclo
+                if nivel < 20:  # Si el nivel actual es menor que 20
+                    nivel += 1  # Incrementar el nivel
+                else:
+                    nivel = 20  # Establecer el nivel máximo
+            
+    print("Juego terminado.")  # Imprimir un mensaje indicando que el juego ha terminado
+
+# juegoMatematico()
