@@ -159,9 +159,9 @@ def supImpares(pila):
     temp = pila.pop()
     if temp % 2 == 0:
         supImpares(pila)
+        pila.push(temp)
     else:
         supImpares(pila)
-        pila.push(temp)
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
