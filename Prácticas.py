@@ -1,4 +1,4 @@
-# Se tiene un listado con los siguientes datos: Número de alumno (1 a n), número de materia (1 a m), nota (0 a 10). * El mismo número de alumno y de materia puede aparecer más de una vez. * El listado no está ordenado, ni necesariamente completo. Esto último quiere decir que puede ser que un alumno no haya cursado una o más materias, y por lo tanto no existan los datos correspondientes en el listado. Se pide: a- Crear una estructura bidimensional (matriz) que almacene el promedio por materia de cada alumno e informarla asignándole en la impresión un guión en caso de faltar datos. b- Informar el porcentaje de alumnos que cursó cada materia y el promedio general por materia considerando los alumnos que la cursaron. c- Informar la cantidad de materias que cursó cada alumno y el promedio que obtuvo considerando las materias que cursó.
+# Se tiene un listado con los siguientes datos: Número de alumno (1 a m), número de materia (1 a n), nota (0 a 10). * El mismo número de alumno y de materia puede aparecer más de una vez. * El listado no está ordenado, ni necesariamente completo. Esto último quiere decir que puede ser que un alumno no haya cursado una o más materias, y por lo tanto no existan los datos correspondientes en el listado. Se pide: a- Crear una estructura bidimensional (matriz) que almacene el promedio por materia de cada alumno e informarla asignándole en la impresión un guión en caso de faltar datos. b- Informar el porcentaje de alumnos que cursó cada materia y el promedio general por materia considerando los alumnos que la cursaron. c- Informar la cantidad de materias que cursó cada alumno y el promedio que obtuvo considerando las materias que cursó.
 def analisis_alumnos():
     alumnos = []
     materias = []
@@ -76,8 +76,47 @@ def analisis_alumnos():
 
 # El código de analisis_alumnos() está bien encaminado en el sentido de que "casi" cumple con el enunciado, pero su funcionamiento es incorrecto. Algunos ejemplos son que en la primer fila se muestra un valor flotante en lugar de entero y sus últimas dos columnas muestran valores raros, en las demás filas estas últimas dos columnas únicamente muestran unos y ceros. Por otra parte los promedios, porcentajes y cantidades podrían probablemente no ser correctos, y la interfaz final mostrada al usuario es muy poco comprensible ya que no se explica qué expresa y para qué sirve cada número. Todos estos y tal vez algunos otros errores son difíciles de encontrar y más difíciles aún de solucionar sin crear consecuentemente más errores, a mi parecer esto se debe a que el código es innecesariamente complejo y muy poco óptimo, además de que lo escribí hace mucho tiempo y es difícil de seguir. A continuación intentaré volver a crear el código de manera más óptima, con una mayor performance, más comprensible y fácil de seguir, con la menor cantidad posible de errores y una mejor interfaz.
 
+# Datos modificados: Nombre y apellido de alumno, nombre de materia, nota (0 a 10).
+
+# Ejemplo de interfaz final:
+# NombreApellido1:
+# Materia1: Promedio (Nota1, Nota2, NotaN) | Materia2: Promedio (Nota1, Nota2, NotaN) | MateriaN: Promedio (Nota1, Nota2, NotaN) | ...
+# NombreApellido2:
+# Materia1: Promedio (Nota1, Nota2, NotaN) | Materia2: Promedio (Nota1, Nota2, NotaN) | MateriaN: Promedio (Nota1, Nota2, NotaN) | ...
+# NombreApellidoN:
+# Materia1: Promedio (Nota1, Nota2, NotaN) | Materia2: Promedio (Nota1, Nota2, NotaN) | MateriaN: Promedio (Nota1, Nota2, NotaN) | ...
+# ...
+
 def matriz_alumnos():
-    print()
+    alumnos = []
+    materias = []
+    notas = []
+    promedios = []
+    while True:
+        nombre_apellido = input('Nombre y apellido ("salir" para finalizar): ')
+        if nombre_apellido == 'salir':
+            break # Salir del while
+        else:
+            alumnos.append(nombre_apellido) # Agregar el nombre y apellido a alumnos[]
+        materias.append(input('Materia: ')) # Agregar la materia
+        nota = input('Nota: ')
+        if nota == '':
+            notas.append('-') # Si no cursó la materia, agregar un guion
+        else:
+            notas.append(nota) # Si cursó la materia, agregar la nota correspondiente
+    promedios.append([alumnos[0]]) # Agregar la primer lista a promedios[] para definir matriz.
+    for i in range(len(alumnos)): # Recorrer las posiciones de alumnos[]
+        posicion_alumno = -1 # Reestablecer la posicion en caso que el alumno no se encuentre en la lista
+        for j in range(len(promedios)): # Recorrer las posiciones de promedios[]
+            if alumnos[i] in promedios[j]:
+                posicion_alumno = j # Si el alumno se encuentra en la lista, guardar su posición y detener el bucle j
+                break
+        if posicion_alumno == -1:
+            promedios.append([alumnos[i]]) # Si el alumno no se encuentra en la lista, lo agrego
+        
+    print(promedios)
+
+matriz_alumnos()
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
