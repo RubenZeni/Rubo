@@ -1,5 +1,5 @@
-#  Se tiene un listado con los siguientes datos: Número de alumno (1 a n), número de materia (1 a m), nota (0 a 10). * El mismo número de alumno y de materia puede aparecer más de una vez. * El listado no está ordenado, ni necesariamente completo. Esto último quiere decir que puede ser que un alumno no haya cursado una o más materias, y por lo tanto no existan los datos correspondientes en el listado. Se pide: a- Crear una estructura bidimensional que almacene el promedio por materia de cada alumno e informarla asignándole en la impresión un guión en caso de faltar datos. b- Informar el porcentaje de alumnos que cursó cada materia y el promedio general por materia considerando los alumnos que la cursaron. c- Informar la cantidad de materias que cursó cada alumno y el promedio que obtuvo considerando las materias que cursó.
-def analisisAlumnos():
+# Se tiene un listado con los siguientes datos: Número de alumno (1 a n), número de materia (1 a m), nota (0 a 10). * El mismo número de alumno y de materia puede aparecer más de una vez. * El listado no está ordenado, ni necesariamente completo. Esto último quiere decir que puede ser que un alumno no haya cursado una o más materias, y por lo tanto no existan los datos correspondientes en el listado. Se pide: a- Crear una estructura bidimensional (matriz) que almacene el promedio por materia de cada alumno e informarla asignándole en la impresión un guión en caso de faltar datos. b- Informar el porcentaje de alumnos que cursó cada materia y el promedio general por materia considerando los alumnos que la cursaron. c- Informar la cantidad de materias que cursó cada alumno y el promedio que obtuvo considerando las materias que cursó.
+def analisis_alumnos():
     alumnos = []
     materias = []
     notas = []
@@ -20,48 +20,49 @@ def analisisAlumnos():
             notas.append('-')
         else:
             notas.append(int(nota_alumno))
+        print(f'Número de alumno: {alumnos} | Número de materia: {materias} | Nota: {notas}.')
         numero_alumno = int(input('Número de alumno (0 para finalizar): '))
     
     promedios.append([alumnos[0], materias[0], 0, 0, 1, 0]) # Asigno a la posición 0 de los promedios (con alumno en posición 0): Número de alumno, Número de materia, Nota, Promedio general del alumno, Cantidad de materias del alumno y Contador de notas para calcular el promedio de cada materia del alumno
     for i in range(len(alumnos)): # Recorro la lista de alumnos (con i)
-        print(f'VALOR I = {i}')
+        alumno_anotado = -1
+        materia_anotada = -1
+        print(f'Posición en "alumnos": {i}')
         for j in (posicion_ultimo_alumno, 0, -1): # Recorro desde la posición actual hacia atrás (con j)
-            print(f'VALOR J = {j}')
-            if alumnos[i] == promedios[j][0]: # ¿Es el alumno en la posición actual (i) igual al que se encuentra en la posición j? (j irá cambiando)
-                alumno_anotado = j # Si lo es, guardo la posición del alumno
-                if materias[i] == promedios[j][1]: # Además ¿Es la materia en la posición actual (la del alumno, i) igual a la que se encuentra en la posición j? (j irá cambiando)
-                    materia_anotada = j # Si lo es, guardo la posición de la materia
+            print(f'Posición en "posicion_ultimo_alumno": {j}')
+            if alumnos[i] == promedios[j][0]: # Si el alumno en la posición actual (i) es igual al que se encuentra en la posición j (j irá cambiando)
+                alumno_anotado = j # Guardo la posición del alumno y luego freno...
+                if materias[i] == promedios[j][1]: # Además, si la materia en la posición actual (la del alumno[i]) es igual a la que se encuentra en la posición j (j irá cambiando)
+                    materia_anotada = j # Guardo la posición de la materia
                 else:
                     materia_anotada = -1 # Si no lo es, guardo un número negativo indicando que no hay posición de materia
-                break # Además, freno el bucle en reversa
+                break # ...freno el bucle en reversa
             else:
                 alumno_anotado = -1 # Si no lo es, guardo un número negativo indicando que no hay posición de alumno
-                if notas[i] != '-': # ¿El alumno cursó la materia?
-                    alumnos_que_cursaron += 1 # Si es así, sumno 1 al contador para el porcentaje
-        if materia_anotada >= 0: # Una vez finalizado el bucle en reversa, ¿Ya existía el número del alumno en la lista, con la misma materia?
-            if notas[i] != '-': # ¿El alumno cursó la materia?
-                promedios[alumno_anotado][2] += notas[i] # Si es así, entonces sumo la nota a la actual
-                promedios[alumno_anotado][3] += notas[i] # Y también sumo la nota a la de promedio general del alumno
-                promedios[alumno_anotado][5] += 1 # Además, agrego uno al contador de notas para poder calcular el promedio
-        elif alumno_anotado >= 0: # Si no es así, ¿Estaba el número del alumno pero sin la misma materia?
-            promedios.append([alumnos[i], materias[i], notas[i], 0, 1, 0]) # Si es así, asigno un nuevo elemento para el mismo alumno pero con una materia distinta a la lista
+                if notas[i] != '-': # Si el alumno cursó la materia
+                    alumnos_que_cursaron += 1 # Sumo 1 al contador para el porcentaje final
+        if materia_anotada >= 0: # Una vez finalizado el bucle en reversa, si ya existe el número del alumno en la lista, con la misma materia
+            if notas[i] != '-': # Si el alumno cursó la materia
+                promedios[alumno_anotado][2] += notas[i] # Sumo la nota a la actual
+                promedios[alumno_anotado][3] += notas[i] # Sumo la nota al promedio general del alumno
+                promedios[alumno_anotado][5] += 1 # Agrego uno al contador de notas para poder calcular el promedio
+        elif alumno_anotado >= 0: # Si sí existe el número del alumno en la lista, pero sin la misma materia
+            promedios.append([alumnos[i], materias[i], notas[i], 0, 1, 0]) # Asigno un nuevo elemento para el mismo alumno pero con una materia distinta a la lista
             posicion_ultimo_alumno += 1 # Al haber agregado un elemento a la lista debo actualizar el contador de posiciones
-            if notas[i] != '-': # ¿El alumno cursó la materia?
-                promedios[alumno_anotado][4] += 1 # Si es así, entonces sumo uno a la cantidad de materias que cursó el alumno
-        else: # ¿No estaba ya el número del alumno en la lista?
-            total_alumnos += 1
-            promedios.append([alumnos[i], materias[i], notas[i], 0, 1, 0]) # Si es así, entonces asigno un nuevo elemento para el alumno su respectiva materia y nota
+            if notas[i] != '-': # Si el alumno cursó la materia
+                promedios[alumno_anotado][4] += 1 # Sumo uno a la cantidad de materias que cursó el alumno
+        else: # Si no existe el número del alumno en la lista
+            total_alumnos += 1 # Sumo 1 al total de alumnos
+            promedios.append([alumnos[i], materias[i], notas[i], 0, 1, 0]) # Asigno un nuevo elemento para el alumno, con su materia y nota correspondientes
             posicion_ultimo_alumno += 1 # Al haber agregado un elemento a la lista debo actualizar el contador de posiciones
     promedios.sort() # Ordeno la lista de promedios para tener a todos los alumnos en orden
     for i in range(len(promedios)): # Recorro la lista de promedios
-        if promedios[i][2] != '-': # ¿El alumno cursó la materia?
-            promedio_general += promedios[i][2] # Si es así, sumo los promedios de los alumnos que cursaron para tener el promedio general
-            if promedios[i][5] != 0:
-                promedios[i][2] = promedios[i][2] / promedios[i][5] # Además, calculo el promedio de cada alumno
-            del promedios[i][5] # Y elimino el elemento contador de notas porque no me sirve más
-    ver = input('¿Desea visualizar la martiz? (s/n): ')
-    print()
-    if ver == 's':
+        if promedios[i][2] != '-': # Si el alumno cursó la materia
+            promedio_general += promedios[i][2] # Sumo los promedios de los alumnos que cursaron para tener el promedio general
+            if promedios[i][5] != 0: # Si existe promedio de la materia del alumno (muy probablemente sí)
+                promedios[i][2] = promedios[i][2] / promedios[i][5] # Calculo el promedio de cada alumno
+            del promedios[i][5] # Y elimino el elemento contador de notas porque ya no sirve más
+    if input('¿Desea visualizar la martiz? (s/n): ') == 's':
         for i in range(len(promedios)):
             print('[', end = '')
             for j in range(len(promedios[0])):
@@ -70,6 +71,13 @@ def analisisAlumnos():
                     print(', ', end = '')
             print(']')
         print()
+
+# analisis_alumnos()
+
+# El código de analisis_alumnos() está bien encaminado en el sentido de que "casi" cumple con el enunciado, pero su funcionamiento es incorrecto. Algunos ejemplos son que en la primer fila se muestra un valor flotante en lugar de entero y sus últimas dos columnas muestran valores raros, en las demás filas estas últimas dos columnas únicamente muestran unos y ceros. Por otra parte los promedios, porcentajes y cantidades podrían probablemente no ser correctos, y la interfaz final mostrada al usuario es muy poco comprensible ya que no se explica qué expresa y para qué sirve cada número. Todos estos y tal vez algunos otros errores son difíciles de encontrar y más difíciles aún de solucionar sin crear consecuentemente más errores, a mi parecer esto se debe a que el código es innecesariamente complejo y muy poco óptimo, además de que lo escribí hace mucho tiempo y es difícil de seguir. A continuación intentaré volver a crear el código de manera más óptima, con una mayor performance, más comprensible y fácil de seguir, con la menor cantidad posible de errores y una mejor interfaz.
+
+def matriz_alumnos():
+    print()
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -92,96 +100,96 @@ class Stack:
     def size(self):
         return len(self.__elements)
 
-def llenarPila():
+def llenar_pila():
     pila = Stack()
-    pila.push("a")
-    pila.push("b")
-    pila.push("c")
-    pila.push("d")
-    pila.push("e")
-    pila.push("f")
-    pila.push("g")
-    pila.push("h")
-    pila.push("i")
-    pila.push("j")
-    pila.push("k")
-    pila.push("l")
+    pila.push('a')
+    pila.push('b')
+    pila.push('c')
+    pila.push('d')
+    pila.push('e')
+    pila.push('f')
+    pila.push('g')
+    pila.push('h')
+    pila.push('i')
+    pila.push('j')
+    pila.push('k')
+    pila.push('l')
 
 pila_aux = Stack()
-llenarPila()
+llenar_pila()
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Búsqueda recursiva de un elemento en una pila.
-def buscarPila(pila, elemento):
+def buscar_pila(pila, elemento):
     if pila.size() == 0:
-        print("Elemento no encontrado.")
+        print('Elemento no encontrado.')
         return
     temp = pila.pop()
     if temp == elemento:
-        print("Elemento encontrado.")
+        print('Elemento encontrado.')
         pila.push(temp)
     else:
-        buscarPila(pila, elemento)
+        buscar_pila(pila, elemento)
         pila.push(temp)
 
-# buscarPila(pila, input("Buscar elemento: "))
+# buscar_pila(pila, input('Buscar elemento: '))
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Búsqueda recursiva de un elemento en una pila con distancia entre el último elemento y el buscado, o ubicación del elemento dentro de la pila.
-def buscarPilaDistancia(pila, elemento):
+def buscar_pila_distancia(pila, elemento):
     if pila.size() == 0:
-        print("Elemento no encontrado.")
+        print('Elemento no encontrado.')
         return -1
     temp = pila.pop()
     if temp == elemento:
-        print("Elemento encontrado.")
+        print('Elemento encontrado.')
         pila.push(temp)
         return 0
     else:
-        distancia = buscarPilaDistancia(pila, elemento)
+        distancia = buscar_pila_distancia(pila, elemento)
         if distancia != -1:
             distancia += 1
         pila.push(temp)
         return distancia
 
-# distancia = buscarPilaDistancia(pila, input("Buscar elemento: "))
+# distancia = buscar_pila_distancia(pila, input('Buscar elemento: '))
 # if distancia != -1:
-#     print(f"Si se quitan los últimos {distancia} elementos de la pila, se podrá acceder al elemento buscado.")
+#     print(f'Si se quitan los últimos {distancia} elementos de la pila, se podrá acceder al elemento buscado.')
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Suprimir números impares de una pila de manera recursiva.
-def supImpares(pila):
+def suprimir_impares(pila):
     if pila.size() == 0:
         return
     temp = pila.pop()
     if temp % 2 == 0:
-        supImpares(pila)
+        suprimir_impares(pila)
         pila.push(temp)
     else:
-        supImpares(pila)
+        suprimir_impares(pila)
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Un Hola Mundo que se escribe solo recorriendo una a una las letras del abecedario. Puede recibir opcionalmente el tiempo que pasa entre cada letra que se muestra en pantalla.
-def holaMundoAuto(tiempo = 0.04, pos = 0):
+def hola_mundo_auto(tiempo = 0.04, pos = 0):
     import time
     indice = pos
-    letras = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] # Mapeo de letras
-    frases_HM = ["", "H", "Ho", "Hol", "Hola ", "Hola m", "Hola mu", "Hola mun", "Hola mund", "Hola mundo"]
-    letras_HM = ["h", "o", "l", "a", "m", "u", "n", "d", "o"]
+    letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] # Mapeo de letras
+    frases_HM = ['', 'H', 'Ho', 'Hol', 'Hola ', 'Hola m', 'Hola mu', 'Hola mun', 'Hola mund', 'Hola mundo']
+    letras_HM = ['h', 'o', 'l', 'a', 'm', 'u', 'n', 'd', 'o']
     letra = 0 # Letra inicial
     while True:
         if indice < 9:
-            if letras[letra - 1] == letras_HM[pos]: # Si la última letra es "h"...
-                holaMundoAuto(tiempo ,pos + 1) # Recursividad
+            if letras[letra - 1] == letras_HM[pos]: # Si la última letra es 'h'...
+                hola_mundo_auto(tiempo ,pos + 1) # Recursividad
                 return
         else:
             break
             
-        print(frases_HM[indice], letras[letra], sep="")
+        print(frases_HM[indice], letras[letra], sep='')
         if letra < 25: # Para repetir el abcedario después de la Z
             letra += 1
         else:
@@ -190,7 +198,7 @@ def holaMundoAuto(tiempo = 0.04, pos = 0):
         time.sleep(tiempo) # Esperar tiempo indicado. Predeterminado: 0.04 seg.
     return frases_HM[9]
 
-# holaMundoAuto()
+# hola_mundo_auto()
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -212,40 +220,40 @@ def presionarTecla(caracter = None): # Esta función sirve para probar teclaPres
     while True:
         if teclaPresionada(caracter):
             if caracter != None:
-                print(f"Se presionó la tecla {caracter}.")
+                print(f'Se presionó la tecla {caracter}.')
             else:
-                print("Se presionó una tecla.")
+                print('Se presionó una tecla.')
             break
         else:
-            print("Sin cambios.")
+            print('Sin cambios.')
 
 # presionarTecla()
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Este es como el holaMundoAuto(), con la diferencia de que en este se debe presionar una tecla para detener el abecedario, debiendo quedar la letra correspondiente a la posición del cursor en la palabra "Hola Mundo". Es algo así como un juego del holaMundoAuto(), de ahí el nombre.
+# Este es como el hola_mundo_auto(), con la diferencia de que en este se debe presionar una tecla para detener el abecedario, debiendo quedar la letra correspondiente a la posición del cursor en la palabra "Hola Mundo". Es algo así como un juego del hola_mundo_auto(), de ahí el nombre.
 
-def holaMundoJuego(tiempo = 0.2, pos = 0):
+def hola_mundo_juego(tiempo = 0.2, pos = 0):
     import time
     indice = pos
-    letras = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] # Mapeo de letras
-    frases_HM = ["", "H", "Ho", "Hol", "Hola ", "Hola m", "Hola mu", "Hola mun", "Hola mund", "Hola mundo"]
-    letras_HM = ["h", "o", "l", "a", "m", "u", "n", "d", "o"]
+    letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] # Mapeo de letras
+    frases_HM = ['', 'H', 'Ho', 'Hol', 'Hola ', 'Hola m', 'Hola mu', 'Hola mun', 'Hola mund', 'Hola mundo']
+    letras_HM = ['h', 'o', 'l', 'a', 'm', 'u', 'n', 'd', 'o']
     letra = 0 # Letra inicial
     while True:
         if indice < 9:
             if teclaPresionada(None): # Si se presionó una tecla...
                 if letras[letra - 1] == letras_HM[pos]: # Si la última letra es "h"...
-                    holaMundoJuego(tiempo, pos + 1)
-                    return "Bien hecho!"
+                    hola_mundo_juego(tiempo, pos + 1)
+                    return 'Bien hecho!'
                 else:
-                    print("Mal ahí, seguí intentando...")
+                    print('Mal ahí, seguí intentando...')
                     letra = 0
                     time.sleep(1) # Esperar 1 segundo
         else:
             break
             
-        print(frases_HM[indice], letras[letra], sep="")
+        print(frases_HM[indice], letras[letra], sep='')
         if letra < 25: # Para repetir el abcedario después de la Z
             letra += 1
         else:
@@ -254,23 +262,23 @@ def holaMundoJuego(tiempo = 0.2, pos = 0):
         time.sleep(tiempo) # Esperar tiempo indicado. Predeterminado: 0.2 seg
     return frases_HM[9]
 
-# print(holaMundoJuego())
+# print(hola_mundo_juego())
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Función recursiva que imprime la cadena ingresada como parámetro de la misma manera en que holaMundoAuto() lo haría. Se admiten caracteres alfanuméricos y unos cuantos símbolos. ¿Por qué recursiva? Porque sí, porque queda linda :)
+# Función recursiva que imprime la cadena ingresada como parámetro de la misma manera en que hola_mundo_auto() lo haría. Se admiten caracteres alfanuméricos y unos cuantos símbolos. ¿Por qué recursiva? Porque sí, porque queda linda :)
 def escribirAuto(cadena, tiempo = 0.02, pos = 0): # Recibe una cadena y la posicion de la letra a buscar en letras
     import time
     indice = pos # Hay lugares en donde pos por poco no es el correcto, por eso lo almaceno antes en indice (como un pos_aux)
-    letras = [" ", "a", "á", "b", "c", "d", "e", "é", "f", "g", "h", "i", "í", "j", "k", "l", "m", "n", "o", "ó", "p", "q", "r", "s", "t", "u", "ú", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", ":", "-", "_", "(", ")", "¿", "?", "¡", "!", "#", "$", "%", "+", "*", "/"] # Mapeo de caracteres
-    frases = [""] # Declaración de la lista donde se almacenará la cadena por partes. Siendo f la posición de cada elemento en frases y g la posición de cada elemento en cadena, empezando con f(0)
+    letras = [' ', 'a', 'á', 'b', 'c', 'd', 'e', 'é', 'f', 'g', 'h', 'i', 'í', 'j', 'k', 'l', 'm', 'n', 'o', 'ó', 'p', 'q', 'r', 's', 't', 'u', 'ú', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', ':', '-', '_', '(', ')', '¿', '?', '¡', '!', '#', '$', '%', '+', '*', '/'] # Mapeo de caracteres
+    frases = [''] # Declaración de la lista donde se almacenará la cadena por partes. Siendo f la posición de cada elemento en frases y g la posición de cada elemento en cadena, empezando con f(0)
     extra = -1
     while True:
         if extra < len(cadena) + 1:
-            cadenita = ""
+            cadenita = ''
             for elemento in range(0, extra):
                 cadenita += cadena[elemento]
-            if cadenita != "":
+            if cadenita != '':
                 frases.append(cadenita)
             extra += 1
         else:
@@ -281,13 +289,13 @@ def escribirAuto(cadena, tiempo = 0.02, pos = 0): # Recibe una cadena y la posic
     letra = 0 # Letra inicial
     while True:
         if indice < len(listaCadena):
-            if letras[letra - 1] == f"{listaCadena[pos]}".lower(): # Si la última letra es correcta...
+            if letras[letra - 1] == f'{listaCadena[pos]}'.lower(): # Si la última letra es correcta...
                 escribirAuto(cadena, tiempo, pos + 1) # Recursividad
-                return ""
+                return ''
         else:
             break
         
-        print(frases[indice], letras[letra], sep="")
+        print(frases[indice], letras[letra], sep='')
         if letra < len(letras) - 1: # Para repetir el abcedario después de la Z
             letra += 1
         else:
@@ -295,19 +303,19 @@ def escribirAuto(cadena, tiempo = 0.02, pos = 0): # Recibe una cadena y la posic
           
         time.sleep(tiempo) # Esperar tiempo indicado. Predeterminado: 0.02 seg
 
-# print(escribirAuto("+¿Para el Junior? / -Sí, creo. / +Perfecto! Gracias :)"))
+# print(escribirAuto('+¿Para el Junior? / -Sí, creo. / +Perfecto! Gracias :)'))
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Juego matemático de agilidad mental. Tras un conteo regresivo aparece una operación en pantalla, entonces el usuario deberá ingresar el resultado de ésta, si no lo hace antes de un tiempo indicado se toma como incorrecto, en cuyo caso el jugador perderá una vida y deberá volver a intentar. Si las vidas llegan a 0 entonces piede. Si ingresa el resultado correcto y a tiempo entonces podrá continuar con otra opeación un poco más difícil, de esta manera irá subiendo de nivel. Más pronto sea ingresado el resultado correcto, más puntos obtendrá el usuario. Los puntos se acumulan y al llegar al final del juego son mostrados en pantalla. El final del juego aún no está definido.
 # Pienso escribir cada día un poco más del código, haciendo versiones distintas del juego cada vez. Hasta lograr el enunciado de arriba.
 
-def juegoMatematico():
+def juego_matematico():
     import random
     import time
     # Mensaje de bienvenida y explicación del juego
-    print("A continuación se mostrarán distintas operaciones que irán aumentando su dificultad con cada nivel. Si respondés bien subís de nivel, si respondés mal perdés una vida y tanto el nivel como la operación son los mismos. Tenés 5 segundos para ingresar el resultado, si una vez ingresado el tiempo expiró se toma como respuesta incorrecta.")
-    input("Presioná cualquier tecla para continuar...")
+    print('A continuación se mostrarán distintas operaciones que irán aumentando su dificultad con cada nivel. Si respondés bien subís de nivel, si respondés mal perdés una vida y tanto el nivel como la operación son los mismos. Tenés 5 segundos para ingresar el resultado, si una vez ingresado el tiempo expiró se toma como respuesta incorrecta.')
+    input('Presioná cualquier tecla para continuar...')
 
     def generar_operacion(nivel): # Definir los límites de los números aleatorios según el nivel
         if nivel <= 5: # Para los niveles 1 al 5, los números aleatorios están entre 1 y nivel*10
@@ -327,11 +335,11 @@ def juegoMatematico():
             b = random.randint(1, 10)
             operador = random.choice(['+', '-', '*', '/'])
         
-        return f"{a} {operador} {b}" # Devolver la operación como una cadena de texto
+        return f'{a} {operador} {b}' # Devolver la operación como una cadena de texto
 
     def ingresarResultado(resultado): # Función para que el usuario ingrese el resultado de la operación
         inicio = time.time()  # Tiempo de inicio
-        respuesta_usuario = input("Ingrese el resultado: ")  # El usuario ingresa su respuesta
+        respuesta_usuario = input('Ingrese el resultado: ')  # El usuario ingresa su respuesta
         fin = time.time()  # Tiempo de finalización
 
         # Verificar si el usuario ingresó el resultado correcto
@@ -347,62 +355,62 @@ def juegoMatematico():
 
     vidas = 3  # Número inicial de vidas
     nivel = 1  # Número inicial de nivel
-    operacion = ""  # Operación actual
+    operacion = ''  # Operación actual
 
     while vidas > 0:  # Mientras el jugador tenga vidas
-        print("")  # Línea en blanco
-        print(f"Nivel: {nivel}")  # Nivel actual
-        print(f"Vidas: {vidas}")  # Cantidad de vidas restantes
+        print('')  # Línea en blanco
+        print(f'Nivel: {nivel}')  # Nivel actual
+        print(f'Vidas: {vidas}')  # Cantidad de vidas restantes
 
         if not operacion:  # Si no hay una operación actual generada
             operacion = generar_operacion(nivel)  # Generar una nueva operación para el nivel actual
-        print(f"Operación: {operacion}")  # Imprimir la operación actual
+        print(f'Operación: {operacion}')  # Imprimir la operación actual
 
         resultado = ingresarResultado(eval(operacion))  # Obtener la respuesta del usuario y evaluarla
         if resultado == -2:  # Si el tiempo expiró y la respuesta es incorrecta.
             vidas -= 1  # Restar una vida
-            print("Respuesta incorrecta y iempo expirado.")  # Imprimir un mensaje indicando que ta todo mal
+            print('Respuesta incorrecta y iempo expirado.')  # Imprimir un mensaje indicando que ta todo mal
             if vidas == 0:  # Si ya no quedan vidas
                 break  # Salir del bucle
-            respuesta = input("¿Desea salir? (s/n): ")  # Preguntar al usuario si desea salir
+            respuesta = input('¿Desea salir? (s/n): ')  # Preguntar al usuario si desea salir
             if respuesta.lower() == 's':  # Si el usuario desea salir
                 break  # Salir del bucle
             elif respuesta.lower() == 'n':  # Si el usuario desea continuar
                 continue  # Continuar con la siguiente iteración del bucle
         elif resultado == -1:  # Si el tiempo expiró
             vidas -= 1  # Restar una vida
-            print("Tiempo expirado.")  # Imprimir un mensaje indicando que el tiempo expiró
+            print('Tiempo expirado.')  # Imprimir un mensaje indicando que el tiempo expiró
             if vidas == 0:  # Si ya no quedan vidas
                 break  # Salir del bucle
-            respuesta = input("¿Desea salir? (s/n): ")  # Preguntar al usuario si desea salir
+            respuesta = input('¿Desea salir? (s/n): ')  # Preguntar al usuario si desea salir
             if respuesta.lower() == 's':  # Si el usuario desea salir
                 break  # Salir del bucle
             elif respuesta.lower() == 'n':  # Si el usuario desea continuar
                 continue  # Continuar con la siguiente iteración del bucle
         elif resultado == 0:  # Si la respuesta es incorrecta
             vidas -= 1  # Restar una vida
-            print("Respuesta incorrecta.")  # Imprimir un mensaje indicando que el tiempo expiró
+            print('Respuesta incorrecta.')  # Imprimir un mensaje indicando que el tiempo expiró
             if vidas == 0:  # Si ya no quedan vidas
                 break  # Salir del bucle
-            respuesta = input("¿Desea salir? (s/n): ")  # Preguntar al usuario si desea salir
+            respuesta = input('¿Desea salir? (s/n): ')  # Preguntar al usuario si desea salir
             if respuesta.lower() == 's':  # Si el usuario desea salir
                 break  # Salir del bucle
             elif respuesta.lower() == 'n':  # Si el usuario desea continuar
                 continue  # Continuar con la siguiente iteración del bucle
         elif resultado == 1:  # Si la respuesta es correcta
-            print("Respuesta correcta.")  # Imprimir un mensaje indicando que la respuesta es correcta
+            print('Respuesta correcta.')  # Imprimir un mensaje indicando que la respuesta es correcta
             if vidas == 0:  # Si ya no quedan vidas
                 break  # Salir del bucle
-            respuesta = input("¿Desea salir? (s/n): ")  # Preguntar al usuario si desea salir
+            respuesta = input('¿Desea salir? (s/n): ')  # Preguntar al usuario si desea salir
             if respuesta.lower() == 's':  # Si el usuario desea salir
                 break  # Salir del bucle
             elif respuesta.lower() == 'n':  # Si el usuario desea continuar
-                operacion = ""  # Reiniciar la operación para generar una nueva en el próximo ciclo
+                operacion = ''  # Reiniciar la operación para generar una nueva en el próximo ciclo
                 if nivel < 20:  # Si el nivel actual es menor que 20
                     nivel += 1  # Incrementar el nivel
                 else:
                     nivel = 20  # Establecer el nivel máximo
             
-    print("Juego terminado.")  # Imprimir un mensaje indicando que el juego ha terminado
+    print('Juego terminado.')  # Imprimir un mensaje indicando que el juego ha terminado
 
-# juegoMatematico()
+# juego_matematico()
