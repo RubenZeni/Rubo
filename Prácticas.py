@@ -88,10 +88,12 @@ def analisis_alumnos():
 # ...
 
 def matriz_alumnos():
-    alumnos = []
-    materias = []
-    notas = []
-    promedios = []
+    alumnos = [] # En esta lista se almacenarán los nombres y apellidos de los alumnos
+    materias = [] # En esta lista se almacenarán las materias de los alumnos
+    notas = [] # En esta lista se almacenarán las notas de los alumnos para calcular el promedio por materia de cada uno
+    promedios = [] # En esta lista se almacenarán los alumnos, con su materia y promedio correspondiente
+    notas_ind = [] # En esta lista se almacenarán los alumnos, con su materia y notas individuales correspondientes (Nota1, Nota2, NotaN)
+    # Bucle para ingreso de datos
     while True:
         nombre_apellido = input('Nombre y apellido ("salir" para finalizar): ')
         if nombre_apellido == 'salir':
@@ -100,23 +102,80 @@ def matriz_alumnos():
             alumnos.append(nombre_apellido) # Agregar el nombre y apellido a alumnos[]
         materias.append(input('Materia: ')) # Agregar la materia
         nota = input('Nota: ')
-        if nota == '':
+        if nota == '' or nota == '-':
             notas.append('-') # Si no cursó la materia, agregar un guion
         else:
             notas.append(nota) # Si cursó la materia, agregar la nota correspondiente
-    promedios.append([alumnos[0]]) # Agregar la primer lista a promedios[] para definir matriz.
+    # Secuencia operacional
+    promedios.append([alumnos[0]]) # Agregar la primer lista con NombreApellido a promedios[] para definir matriz.
+    notas_ind.append([alumnos[0]]) # Agregar la primer lista con NombreApellido a notas_ind[] para definir matriz.
     for i in range(len(alumnos)): # Recorrer las posiciones de alumnos[]
-        posicion_alumno = -1 # Reestablecer la posicion en caso que el alumno no se encuentre en la lista
+        posicion_alumno = False # Reestablecer posicion_alumno en caso que el alumno no se encuentre en la lista
         for j in range(len(promedios)): # Recorrer las posiciones de promedios[]
-            if alumnos[i] in promedios[j]:
-                posicion_alumno = j # Si el alumno se encuentra en la lista, guardar su posición y detener el bucle j
-                break
-        if posicion_alumno == -1:
-            promedios.append([alumnos[i]]) # Si el alumno no se encuentra en la lista, lo agrego
-        
+            if alumnos[i] in promedios[j] and not posicion_alumno:
+                posicion_alumno = True # Si el alumno se encuentra en la lista, guardar su posición  
+                if materias[i] in promedios[j]: # Si la materia ya se encuentra en la lista correspondiente al alumno...
+                    posicion_materia = -1 # Reestablecer posicion_materia para su poterior correcto funcionamiento y utilización
+                    for k in range(len(promedios[j])): # Recorrer las posiciones de la "sublista" correspondiente al alumno, promedios[[]]
+                        if materias[i] == promedios[j][k]:
+                            posicion_materia = k # Al encontrar la posición de la materia dentro de esta "sublista", guardarla y frenar el bucle
+                            break
+                    if notas[i] != '-':
+                        promedios[j][posicion_materia + 1] += int(notas[i]) # Sumar la nota a la existente para el promedio (dividendo)
+                        promedios[j][posicion_materia + 2] += 1 # Sumar 1 al contador de notas para el promedio (divisor)
+                        notas_ind[j].append(int(notas[i])) # Agregar la nota individual a la misma lista
+                    break
+                else:
+                    promedios[j].append(materias[i]) # Si la materia no se encuentra en la lista correspondiente al alumno, agregarla
+                    notas_ind[j].append(materias[i]) # Agregar la materia también a la lista de notas individuales del alumno
+                    if notas[i] == '-':
+                        promedios[j].append(notas[i])
+                        notas_ind[j].append(notas[i])
+                    else:
+                        promedios[j].append(int(notas[i])) # Agregar la nota a la lista para el promedio (dividendo)
+                        promedios[j].append(1) # Agregar un contador de notas para el promedio (divisor)
+                        notas_ind[j].append(int(notas[i])) # Agregar la nota individual a la misma lista
+                    break
+        if not posicion_alumno:
+            promedios.append([alumnos[i]]) # Si el alumno no se encuentra en la lista, agregarlo
+            notas_ind.append([alumnos[i]]) # También agregarlo a la lista de notas individuales
+            promedios[-1].append(materias[i]) # Si la materia no se encuentra en la lista correspondiente al alumno, agregarla
+            notas_ind[-1].append(materias[i]) # Agregar la materia también a la lista de notas individuales del alumno
+            if notas[i] == '-':
+                promedios[-1].append(notas[i])
+                notas_ind[-1].append(notas[i])
+            else:
+                promedios[-1].append(int(notas[i])) # Agregar la nota a la lista para el promedio (dividendo)
+                promedios[-1].append(1) # Agregar un contador de notas para el promedio (divisor)
+                notas_ind[-1].append(int(notas[i])) # Agregar la nota individual a la misma lista
+    
     print(promedios)
+    print(notas_ind)
 
-matriz_alumnos()
+    def calcular_promedio(dividendo, divisor):
+        if divisor == 0:
+            return 0
+        return dividendo / divisor
+    
+    def mostrar_datos(promedios, notas_ind):
+        for i in range(len(promedios)):
+            nombre = promedios[i][0]
+            print(f'{nombre}:')
+            j = 1  # Índice inicial para acceder a los datos de las materias
+            while j < len(promedios[i]):
+                materia = promedios[i][j]
+                dividendo = promedios[i][j+1]
+                divisor = promedios[i][j+2]
+                promedio = calcular_promedio(dividendo, divisor)
+                notas = notas_ind[i][j+1:j+divisor+1]  # Ajustar el rango para evitar el nombre de la materia
+                notas_str = ', '.join(map(str, notas))
+                print(f'\t{materia}: Promedio ({promedio:.2f}) - Notas ({notas_str})')
+                j += 3 # Actualizar el índice para pasar a la próxima materia
+            print()  # Agregar una línea en blanco después de mostrar los datos de un estudiante
+
+    mostrar_datos(promedios, notas_ind)
+
+#matriz_alumnos()
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
