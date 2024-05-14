@@ -152,30 +152,50 @@ def matriz_alumnos():
     print(promedios)
     print(notas_ind)
 
-    def calcular_promedio(dividendo, divisor):
-        if divisor == 0:
-            return 0
-        return dividendo / divisor
-    
-    def mostrar_datos(promedios, notas_ind):
-        for i in range(len(promedios)):
-            nombre = promedios[i][0]
-            print(f'{nombre}:')
-            j = 1  # Índice inicial para acceder a los datos de las materias
-            while j < len(promedios[i]):
-                materia = promedios[i][j]
-                dividendo = promedios[i][j+1]
-                divisor = promedios[i][j+2]
-                promedio = calcular_promedio(dividendo, divisor)
-                notas = notas_ind[i][j+1:j+divisor+1]  # Ajustar el rango para evitar el nombre de la materia
-                notas_str = ', '.join(map(str, notas))
-                print(f'\t{materia}: Promedio ({promedio:.2f}) - Notas ({notas_str})')
-                j += 3 # Actualizar el índice para pasar a la próxima materia
-            print()  # Agregar una línea en blanco después de mostrar los datos de un estudiante
-
-    mostrar_datos(promedios, notas_ind)
-
 #matriz_alumnos()
+
+promedios = [['Rubén', 'Matemática', 27, 3, 'Lengua', 23, 4, 'Física', '-', 'Inglés', 40, 5], ['Ezequiel', 'Matemática', '-', 'Lengua', 33, 4, 'Física', 29, 3], ['Pablo', 'Matemática', 17, 3, 'Lengua', '-', 'Física', 24, 3, 'Alemán', 19, 2]]
+notas_ind = [['Rubén', 'Matemática', 10, 9, 8, 'Lengua', 6, 6, 5, 6, 'Física', '-', 'Inglés', 6, 7, 10, 8, 9], ['Ezequiel', 'Matemática', '-', 'Lengua', 9, 8, 9, 7, 'Física', 10, 9, 10], ['Pablo', 'Matemática', 6, 5, 6, 'Lengua', '-', 'Física', 7, 8, 9, 'Alemán', 9, 10]]
+
+for i in range(len(promedios)):
+    print(f'{promedios[i][0]}:')
+    for j in range(len(promedios[i])):
+        #print(f'|J={j}|', end='')
+        if j > 0:
+            if isinstance(promedios[i][j], str) and promedios[i][j] != '-':
+                print(f'{promedios[i][j]}:', end=' ')
+                if promedios[i][j + 1] != '-':
+                    print(promedios[i][j + 1]/promedios[i][j + 2], end=' ')
+                else:
+                    print(promedios[i][j + 1], end=' ')
+                print('(', end='')
+                lista = False
+                for k in range(j, len(notas_ind[i])):
+                    #print(f'|K={k}|', end='')
+                    if lista or notas_ind[i][k] == promedios[i][j]:
+                        lista = True
+                        for l in range(k, len(notas_ind[i])):
+                            #print(f'|L={l}|', end='')
+                            if l < len(notas_ind[i]) and isinstance(notas_ind[i][l], int):
+                                print(notas_ind[i][l], end='')
+                                if l < len(notas_ind[i]) - 1:
+                                    if isinstance(notas_ind[i][l + 1], int):
+                                        print(', ', end='')
+                                    else:
+                                        if l == len(notas_ind[i]):
+                                            print(')')
+                                        else:
+                                            print(') | ', end='')
+                                        break
+                                else:
+                                    if l == len(notas_ind[i]):
+                                        print(')')
+                                    else:
+                                        print(') | ', end='')
+                                    break
+                            else:
+                                lista = False
+                        break
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
