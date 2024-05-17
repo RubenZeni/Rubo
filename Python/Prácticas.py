@@ -151,51 +151,47 @@ def matriz_alumnos():
     
     print(promedios)
     print(notas_ind)
+    
+    for i in range(len(promedios)): # Recorrer la lista promedios[]
+        #print(f'|I={i}|', end='')
+        print(f'{promedios[i][0]}:') # Imprimir el nombre del alumno
+        ultima_nota = 0
+        for j in range(1, len(promedios[i]) - 1): # Recorrer la lista promedios[i] del alumno actual
+            #print(f'|J={j}|', end='')
+            if isinstance(promedios[i][j], str) and promedios[i][j] != '-':
+                print(f'{promedios[i][j]}:', end=' ') # Si el elemento actual es string y es distinto de '-', imprimir la materia
+                if promedios[i][j + 1] != '-':
+                    print('%.2f' % (promedios[i][j + 1] / promedios[i][j + 2]), end=' ') # Si el elemento siguiente (dividendo) es distinto de '-', imprimir el promedio
+                    print('(', end='') # Abrir paréntesis para las notas individuales
+                    for k in range(ultima_nota + 1, len(notas_ind[i])): # Recorrer notas_ind[i] del alumno actual
+                        #print(f'|K={k}|', end='')
+                        if notas_ind[i][k] == promedios[i][j]:
+                            #lista = True # Se procede a imprimir la lista de notas individuales del alumno
+                            for l in range(k + 1, len(notas_ind[i])): # Si la materia de notas_ind[] es igual a la de promedios[], recorrer notas_ind[i] nuevamente para imprimir notas individuales del alumno actual
+                                #print(f'|L={l}|', end='')
+                                if isinstance(notas_ind[i][l], int):
+                                    print(notas_ind[i][l], end='') # Si el elemento actual es entero imprimir la nota
+                                    if l < len(notas_ind[i]) - 1:
+                                        if isinstance(notas_ind[i][l + 1], int): # Si el elemento actual no es el último de la lista notas_ind[i]
+                                            print(', ', end='') # Si el elemento siguiente es entero, imprimir una coma y un espacio para la siguiente nota
+                                        elif isinstance(notas_ind[i][l + 1], str): # Si en cambio el elemento siguiente es string, cerrar paréntesis y pasar a la siguiente materia
+                                            if l + 1 == len(notas_ind[i]):
+                                                print(')')
+                                                print('cumple', end='')
+                                            else:
+                                                print(') | ', end='')
+                                                print('no cumple', end='')
+                                    elif l == len(notas_ind[i]) - 1:
+                                        print(')') # Si en cambio el elemento actual es el última de notas_ind[i], cerrar paréntesis y pasar línea
+                                        break # Además, frenar bucle de notas individuales
+                                else:
+                                    #lista = False # Si el elemento actual no es entero (es string), terminará la impresión de notas individuales
+                                    break # Por lo tanto, se frena el bucle de notas individuales
+                            break
+                else:
+                    print(f'{promedios[i][j + 1]} | ') # Esta impresión sólo debería saltar de línea si el elemento actual es el último de la lista.
 
 #matriz_alumnos()
-
-promedios = [['Rubén', 'Matemática', 27, 3, 'Lengua', 23, 4, 'Física', '-', 'Inglés', 40, 5], ['Ezequiel', 'Matemática', '-', 'Lengua', 33, 4, 'Física', 29, 3], ['Pablo', 'Matemática', 17, 3, 'Lengua', '-', 'Física', 24, 3, 'Alemán', 19, 2]]
-notas_ind = [['Rubén', 'Matemática', 10, 9, 8, 'Lengua', 6, 6, 5, 6, 'Física', '-', 'Inglés', 6, 7, 10, 8, 9], ['Ezequiel', 'Matemática', '-', 'Lengua', 9, 8, 9, 7, 'Física', 10, 9, 10], ['Pablo', 'Matemática', 6, 5, 6, 'Lengua', '-', 'Física', 7, 8, 9, 'Alemán', 9, 10]]
-
-for i in range(len(promedios)):
-    print(f'{promedios[i][0]}:')
-    for j in range(len(promedios[i])):
-        #print(f'|J={j}|', end='')
-        if j > 0:
-            if isinstance(promedios[i][j], str) and promedios[i][j] != '-':
-                print(f'{promedios[i][j]}:', end=' ')
-                if promedios[i][j + 1] != '-':
-                    print(promedios[i][j + 1]/promedios[i][j + 2], end=' ')
-                else:
-                    print(promedios[i][j + 1], end=' ')
-                print('(', end='')
-                lista = False
-                for k in range(j, len(notas_ind[i])):
-                    #print(f'|K={k}|', end='')
-                    if lista or notas_ind[i][k] == promedios[i][j]:
-                        lista = True
-                        for l in range(k, len(notas_ind[i])):
-                            #print(f'|L={l}|', end='')
-                            if l < len(notas_ind[i]) and isinstance(notas_ind[i][l], int):
-                                print(notas_ind[i][l], end='')
-                                if l < len(notas_ind[i]) - 1:
-                                    if isinstance(notas_ind[i][l + 1], int):
-                                        print(', ', end='')
-                                    else:
-                                        if l == len(notas_ind[i]):
-                                            print(')')
-                                        else:
-                                            print(') | ', end='')
-                                        break
-                                else:
-                                    if l == len(notas_ind[i]):
-                                        print(')')
-                                    else:
-                                        print(') | ', end='')
-                                    break
-                            else:
-                                lista = False
-                        break
 
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
