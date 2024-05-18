@@ -30,31 +30,6 @@ def tecla_presionada_1(tecla):
 
 # -------------------------------------------------------------------------------------------------
 
-# Función parecida a tecla_presionada_1 pero con el módulo curses (disponible en Linux).
-
-def tecla_presionada_2(tecla):
-    import curses
-
-    def main(stdscr):
-        stdscr.nodelay(True)
-        try:
-            return stdscr.getkey()
-        except:
-            return None
-
-    def presionar(tecla):
-        tecla_inp = curses.wrapper(main)
-
-        while tecla_inp is not None:
-            if tecla == tecla_inp:
-                return True
-            tecla_inp = curses.wrapper(main)
-        return False
-
-    presionar(tecla)
-
-# -------------------------------------------------------------------------------------------------
-
 # Juego matemático de agilidad mental. Tras un conteo regresivo aparece una operación en pantalla, entonces el usuario deberá ingresar el resultado de ésta, si no lo hace antes de un tiempo indicado se toma como incorrecto, en cuyo caso el jugador perderá una vida y deberá volver a intentar. Si las vidas llegan a 0 entonces piede. Si ingresa el resultado correcto y a tiempo entonces podrá continuar con otra opeación un poco más difícil, de esta manera irá subiendo de nivel. Más pronto sea ingresado el resultado correcto, más puntos obtendrá el usuario. Los puntos se acumulan y al llegar al final del juego son mostrados en pantalla. El final del juego aún no está definido.
 
 def juego_matematico():
@@ -175,7 +150,7 @@ def hola_mundo_juego(tiempo = 0.2, pos = 0):
     letra = 0 # Letra inicial
     while True:
         if indice < 9:
-            if teclaPresionada(None): # Si se presionó una tecla...
+            if tecla_presionada_1(None): # Si se presionó una tecla...
                 if letras[letra - 1] == letras_HM[pos]: # Si la última letra es "h"...
                     hola_mundo_juego(tiempo, pos + 1)
                     return 'Bien hecho!'
@@ -240,4 +215,72 @@ def piedra_papel_tijera():
         print(f'{nombre}: {usuario_puntos} puntos.')
         print(f'Ordenador: {ordenador_puntos} puntos.', end='\n\n')
 
-piedra_papel_tijera()
+# piedra_papel_tijera()
+
+# -------------------------------------------------------------------------------------------------
+
+# El clásico juego de ta te tí (tic tac toe) con matrices.
+
+def ta_te_ti():
+
+    def turnos():
+        import random
+
+        nombre = input('Nombre de usuario: ')
+        turno = random.choice([nombre, 'Ordenador'])
+        turno = nombre
+
+        if turno == nombre:
+            tablero = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
+
+            print('Considerando las siguientes posiciones:')
+            for pos_y in range(len(tablero)):
+                print(' ', end='')
+                for pos_x, elemento in enumerate(tablero[pos_y]):
+                    print(elemento, end='')
+                    if pos_x < len(tablero[pos_y]) - 1:
+                        print(' | ', end='')
+                    elif pos_y < len(tablero) - 1:
+                        print('\n-----------')
+            posicion = int(input('¿En qué posición dibujarás? --> '))
+            if posicion == 1: y, x = 0, 0
+            elif posicion == 2: y, x = 0, 1
+            elif posicion == 3: y, x = 0, 2
+            elif posicion == 4: y, x = 1, 0
+            elif posicion == 5: y, x = 1, 1
+            elif posicion == 6: y, x = 1, 2
+            elif posicion == 7: y, x = 2, 0
+            elif posicion == 8: y, x = 2, 1
+            elif posicion == 9: y, x = 2, 2
+            
+            tablero = [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
+            dibujar_tablero(tablero, 'x', y, x)
+
+    def dibujar_tablero(tablero, forma = None, y = None, x = None):
+        if not forma:
+            for pos_y in range(len(tablero)):
+                print(' ', end='')
+                for pos_x, elemento in enumerate(tablero[pos_y]):
+                    print(elemento, end='')
+                    if pos_x < len(tablero[pos_y]) - 1:
+                        print(' | ', end='')
+                    elif pos_y < len(tablero) - 1:
+                        print('\n-----------')
+        elif forma == 'x':
+            tablero[y][x] == 'x'
+            print(tablero, y, x, forma)
+            for pos_y in range(len(tablero)):
+                print(' ', end='')
+                for pos_x, elemento in enumerate(tablero[pos_y]):
+                    print(elemento, end='')
+                    if pos_x < len(tablero[pos_y]) - 1:
+                        print(' | ', end='')
+                    elif pos_y < len(tablero) - 1:
+                        print('\n-----------')
+            print('')
+        elif forma == 'o':
+            print('')
+
+    turnos()
+
+ta_te_ti()
