@@ -1,0 +1,21 @@
+Extensiones:
+AREPL for python (ejecución en tiempo real)
+Bearded Theme (muchos temas)
+Live Share (como docs)
+Material Icon Theme (tema de iconos redondos en el workspace)
+One Dark Pro (temas oscuros)
+Pylance (corrección de python en tiempo real)
+Python (python)
+Python Debugger (ejecutar .py)
+Python Ident (identación de python)
+
+Fuente:
+Cascasia Code PL (tiene ligaduras (combinan caracteres en un único símbolo))
+
+Configuraciones:
+cursor blinking (activado, extends)
+cursor animation (activado, normal)
+editor.fontLigatures (settings.json, true)
+linked editing (activado (para modificar ambas etiquetas))
+bracket pair colorization (activado (color en paréntesis, corchetes, llaves, con distinto color por profundidad))
+bracket pairs (true (color en guías verticales que dependen del bloque de código))
