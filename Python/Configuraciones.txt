@@ -10,7 +10,7 @@ Python Debugger (ejecutar .py)
 Python Ident (identación de python)
 
 Fuente:
-Cascasia Code PL (tiene ligaduras (combinan caracteres en un único símbolo))
+Cascadia Code PL (tiene ligaduras (combinan caracteres en un único símbolo))
 
 Configuraciones:
 cursor blinking (activado, extends)
