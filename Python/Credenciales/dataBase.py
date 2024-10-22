@@ -5,22 +5,21 @@ import string
 from credencial import Credencial
 
 class DataBase:
-	def __init__(self, nombre_archivo):
+	def __init__(self, nombre_archivo, ruta_ubicacion = None):
+		self.__ruta_ubicacion = ruta_ubicacion
 		self.__nombre_archivo = nombre_archivo
 		self.__credenciales = self.cargar_datos()
 	
 	def cargar_datos(self):
 		try:
-			with open(os.path.expanduser(f"C:\\VSCode\\Local\\Python\\Proyectos\\Credenciales\\{self.__nombre_archivo}"), 'r') as archivo:
+			with open((self.__nombre_archivo) if self.__ruta_ubicacion is None else (os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}")), 'r') as archivo:
 				return json.load(archivo)
-			# with open(self.__nombre_archivo, "r") as archivo:
-			# 	return {"credenciales": json.load(archivo)}
 		except FileNotFoundError:
 			print(f"Archivo {self.__nombre_archivo} no encontrado, creando uno nuevo.")
 			return {"credenciales": []}
 	
 	def guardar_datos(self):
-		with open(os.path.expanduser(f"C:\\VSCode\\Local\\Python\\Proyectos\\Credenciales\\{self.__nombre_archivo}"), 'w') as archivo:
+		with open((self.__nombre_archivo) if self.__ruta_ubicacion is None else (os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}")), 'w') as archivo:
 			json.dump(self.__credenciales, archivo, indent=4, ensure_ascii= False)
 	
 	def mostrar_credenciales(self):
@@ -98,11 +97,4 @@ class DataBase:
 			print(f"Credencial de usuario {usuario} no encontrada.")
 
 
-db = DataBase("credenciales.json")
-db.mostrar_credenciales()
-print("")
-# db.agregar_credencial()
-# print("")
-db.mostrar_credenciales()
-print("")
-db.modificar_credencial(usuario="PabloZeni", contrasena_aux="Raul3000.", contrasena="HDataya23.")
+# db = DataBase("credenciales.json", "C:\\Users\\Estudiante\\Documents\\Visual Studio Code\\Rubo\\Python\\Credenciales")
