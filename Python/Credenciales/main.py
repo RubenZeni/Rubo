@@ -1,5 +1,5 @@
 from credencial import Credencial
-from dataBase import DataBase
+from database import DataBase
 
 class Error(Exception):
 	def __init__(self, tipo, mensaje="Algo falló xd"):
@@ -14,23 +14,25 @@ while True:
 	try:
 		instruccion = input(". ")
 		if instruccion.lower().startswith("new"):
-			print("|NEW|")
+			# print("|NEW|")
 			if instruccion[4:].lower().startswith("credencial"):
-				print("|CREDENCIAL|")
+				# print("|CREDENCIAL|")
 				if instruccion[14:].lower().startswith(" -"):
-					print("|GUION|")
+					# print("|GUION|")
+					pass
 				else:
-					print("|SIN GUION|")
+					# print("|SIN GUION|")
+					pass
 			elif instruccion[4:].lower().startswith("database"):
-				print("|DATABASE|")
+				# print("|DATABASE|")
 				if instruccion[12:].lower().startswith(" -"):
-					print("|GUION|")
+					# print("|GUION|")
 					if instruccion[14:].lower().endswith("json"):
-						print("|SIN RUTA|")
+						# print("|SIN RUTA|")
 						nombre_archivo = instruccion[14:]
 						print(f"Nombre del archivo: {nombre_archivo}")
 					else:
-						print("|CON RUTA|")
+						# print("|CON RUTA|")
 						indice = instruccion.find(".json -")
 						if indice >= 0:
 							nombre_archivo = instruccion[14:indice+5]
@@ -40,27 +42,31 @@ while True:
 						else:
 							print("Error en la especificación del archivo.")
 				else:
-					print("|SIN GUION|")
+					# print("|SIN GUION|")
+					pass
 			else:
-				print("|SIN CREDENCIAL/DATABASE|")
+				# print("|SIN CREDENCIAL/DATABASE|")
+				pass
 		elif instruccion.lower().startswith("get"):
-			print("|GET|")
+			# print("|GET|")
 			if instruccion[4:].lower().startswith("credencial"):
-				print("|CREDENCIAL|")
+				# print("|CREDENCIAL|")
 				if instruccion[14:].lower().startswith(" -"):
-					print("|GUION|")
+					# print("|GUION|")
+					pass
 				else:
-					print("|SIN GUION|")
+					# print("|SIN GUION|")
+					pass
 			elif instruccion[4:].lower().startswith("database"):
-				print("|DATABASE|")
+				# print("|DATABASE|")
 				if instruccion[12:].lower().startswith(" -"):
-					print("|GUION|")
+					# print("|GUION|")
 					if instruccion[14:].lower().endswith("json"):
-						print("|SIN RUTA|")
+						# print("|SIN RUTA|")
 						nombre_archivo = instruccion[14:]
 						print(f"Nombre del archivo: {nombre_archivo}")
 					else:
-						print("|CON RUTA|")
+						# print("|CON RUTA|")
 						indice = instruccion.find(".json -")
 						if indice >= 0:
 							nombre_archivo = instruccion[14:indice+5]
@@ -70,44 +76,45 @@ while True:
 						else:
 							print("Error en la especificación del archivo.")
 				else:
-					print("|SIN GUION|")
+					# print("|SIN GUION|")
 					if db is not None:
 						db.mostrar_credenciales()
 					else:
 						print("No hay DataBase cargada.")
 			else:
-				print("|SIN CREDENCIAL/DATABASE|")
+				# print("|SIN CREDENCIAL/DATABASE|")
+				pass
 		elif instruccion.lower().endswith("help"):
-			print("|HELP|")
+			# print("|HELP|")
 			print("Sintaxis: comando -parametro1 -parametro2 -parametroN (se debe respetar el guion).")
 			print("\nComandos:")
-			print("new		Crear nueva credencial/database.")
-			print("get		Obtener credencial/database ya cargada.")
-			print("load		Cargar credencial/database existente.")
+			print("new			Crear nueva credencial/database.")
+			print("get			Obtener credencial/database ya cargada.")
+			print("load			Cargar credencial/database existente.")
 			print("\n Para ver los parámetros usa 'help comando'")
 		elif instruccion.lower().startswith("help"):
 			if instruccion[5:].lower().startswith("new"):
-				print("|HELP NEW|")
+				# print("|HELP NEW|")
 				print("Sintaxis: new -parametro1 -parametro2 -parametroN")
 				print("\nParámetros de new:")
 				print("database		Base de datos (json).")
-				print("credencial	Credencial (usuario y contraseña).")
+				print("credencial		Credencial (usuario y contraseña).")
 			elif instruccion[5:].lower().startswith("load"):
-				print("|HELP LOAD|")
+				# print("|HELP LOAD|")
 				print("Sintaxis: load -parametro1 -parametro2 -parametroN")
 				print("\nParámetros de load:")
 				print("database		Base de datos (json).")
-				print("credencial	Credencial (usuario y contraseña).")
+				print("credencial		Credencial (usuario y contraseña).")
 			elif instruccion[5:].lower().startswith("get"):
-				print("|HELP GET|")
+				# print("|HELP GET|")
 				print("Sintaxis: get -parametro1 -parametro2 -parametroN")
 				print("\nParámetros de get:")
 				print("database		Base de datos (json).")
-				print("credencial	Credencial (usuario y contraseña).")
+				print("credencial		Credencial (usuario y contraseña).")
 		elif instruccion.lower().startswith("exit"):
 			break
 		elif instruccion.lower().startswith(""):
-			print("|SIN NEW/GET/HELP|")
+			# print("|SIN NEW/GET/HELP|")
 			raise Error(tipo="Comando inválido", mensaje="Usa 'help' para ver los comandos.")
 	except IndexError:
 		print("IndexError")
