@@ -12,18 +12,24 @@ class DataBase:
 	
 	def cargar_datos(self):
 		try:
-			with open((self.__nombre_archivo) if self.__ruta_ubicacion is None else (os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}")), 'r') as archivo:
+			with open(os.path.expanduser(f".\\{self.__nombre_archivo}") if self.__ruta_ubicacion is None else os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}"), 'r') as archivo:
 				return json.load(archivo)
 		except FileNotFoundError:
-			print(f"Archivo {self.__nombre_archivo} no encontrado, creando uno nuevo.")
+			print(f"Archivo {self.__nombre_archivo} no encontrado. Creando nuevo archivo.")
 			return {"credenciales": []}
 	
 	def guardar_datos(self):
-		with open((self.__nombre_archivo) if self.__ruta_ubicacion is None else (os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}")), 'w') as archivo:
+		with open(os.path.expanduser(f".\\{self.__nombre_archivo}") if self.__ruta_ubicacion is None else os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}"), 'w') as archivo:
 			json.dump(self.__credenciales, archivo, indent=4, ensure_ascii= False)
 	
+	def obtener_credenciales(self):
+		return None if not self.__credenciales["credenciales"] else {}
+
 	def mostrar_credenciales(self):
-		print("Credenciales guardadas:")
+		if not self.__credenciales["credenciales"]:
+			print(f"Data Base '{self.__nombre_archivo}' vacía")
+			return
+		print(f"Data Base '{self.__nombre_archivo}':")
 		for credencial in self.__credenciales["credenciales"]:
 			print(f"Usuario: {credencial['usuario']}, Contraseña: {credencial['contrasena']}")
 	

@@ -1,6 +1,5 @@
 import comandos
-import sys  
-sys.path.append('C:\\VSCode\\Rubo\\Python\\Credenciales\\2.0\\datos')
+import os
 
 class Error(Exception):
     def __init__(self, tipo, mensaje="Algo falló xd"):
@@ -15,21 +14,24 @@ db = None  # Base de datos vacía
 
 while True:
     try:
-        instruccion = input(". ").strip().lower()
+        instruccion = input(". ")
 
-        if instruccion.startswith("new"):
+        if instruccion.lower().startswith("new"):
             invocador.registrar_comando("new", comandos.ComandoNew(instruccion, db))
-            invocador.ejecutar_comando("new")
+            db = invocador.ejecutar_comando("new")
 
-        elif instruccion.startswith("get"):
+        elif instruccion.lower().startswith("get"):
             invocador.registrar_comando("get", comandos.ComandoGet(instruccion, db))
             invocador.ejecutar_comando("get")
 
-        elif instruccion.startswith("help"):
+        elif instruccion.lower().startswith("help"):
             invocador.registrar_comando("help", comandos.ComandoHelp(instruccion, db))
             invocador.ejecutar_comando("help")
         
-        elif instruccion == "exit":
+        elif instruccion.lower() in ["clear", "cls"]:
+            os.system("cls" if os.name == "nt" else "clear") # Limpiar consola (nt = Windows)
+        
+        elif instruccion.lower() == "exit":
             break
         
         else:
