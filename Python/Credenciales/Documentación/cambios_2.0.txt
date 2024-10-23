@@ -1,0 +1,64 @@
+Considerando el nuevo enfoque tomado en el archivo main.py -idea que personalmente me gustó mucho-, el cual consiste en utilizar comandos para interactuar con el "software" creado, pensé que lo mejor es utilizar patrones de diseño, arquitecturas, orientaciones y enfoques específicos que me aseguren un código más legible y comprensible, con más modularidad, mucho mucho menos acoplamiento, y más escalabilidad y estabilidad al permitirme modificar o agregar funcionalidades o comportamientos específicos sin tener que cambiar toda la lógica del código y finalmente no poder continuar. Con ayuda de una IA ChatGPT de OpenAI personalizada y "parametrizada" a mi manera concluí que hay mucho código repetitivo en la forma en que manejo comandos, además los mismos podrían agruparse en una estructura más clara y modular, y finalmente podría mejorarse la claridad de los try-except.
+
+
+
+Patrones de diseño y enfoques recomendados:
+
+Patrón de diseño: Command Pattern
+¿Por qué? Actualmente estoy procesando instrucciones (comandos) de una forma muy repetitiva. El patrón "Command" me va a permitir encapsular cada comando en una clase separada, y tener una estructura más clara, modular y fácilmente extensible para manejar nuevas instrucciones.
+Ventajas:
+Simplifica la estructura del código.
+Facilita la adición de nuevos comandos sin modificar todo el flujo de control.
+Me permite separar la lógica del comando de la lógica de cómo los comandos son invocados.
+
+Patrón de diseño: Factory Method
+¿Por qué? A medida que vaya agregando más tipos de credenciales o bases de datos, es probable que necesite crear diferentes tipos de objetos de manera más flexible. El patrón Factory Method me permite encapsular el proceso de creación de objetos de credenciales o bases de datos sin tener que depender de la implementación concreta.
+Ventajas:
+Facilita la creación de diferentes tipos de credenciales (si llego a tener planes de agregar más variedad en el futuro).
+Permite cambios en la creación sin afectar el resto del código.
+
+Patrón de diseño: Singleton
+¿Por qué? Dado que la aplicación maneja una base de datos centralizada, el patrón Singleton me asegurará que solo exista una instancia de la clase DataBase a lo largo de toda la ejecución del programa. Esto evita la creación accidental de múltiples instancias que podrían ocasionar inconsistencias o sobrecarga en la gestión de datos.
+Ventajas:
+Garantiza que solo haya una instancia de la clase, lo que ayuda a evitar errores en la lógica.
+Control centralizado de acceso a los datos, lo que mejora la fiabilidad.
+Simplifica el manejo de estados compartidos entre diferentes comandos que interactúan con la base de datos.
+
+Separación de responsabilidades: Controlador y Modelo (MVC)
+¿Por qué? Dado que estoy manejando un flujo de entrada de datos, credenciales y bases de datos, una estructura estilo MVC (Modelo-Vista-Controlador) sería útil. Esto haría que el código esté bien organizado en tres componentes:
+Modelo: Las clases Credencial y DataBase.
+Controlador: Una clase que maneje la lógica de la consola (control de flujos de entrada y salida).
+Vista: Una posible consola o interfaz gráfica en el futuro que se encargue de mostrar la información.
+
+
+
+Al mismo tiempo que pienso en esos enfoque, lo que quiero es no generar una "explosión de patrones", que puede complicar innecesariamente el código. La clave está en mantener un equilibrio y aplicar los patrones que realmente agreguen valor sin sobrecargar la estructura. Por ahora voy a trabajar en las modificaciones solamente con los patrones mencionados y mantener la simplicidad y legibilidad en la medida de lo posible.
+El plan es abordar esto paso a paso, evitando complejidad innecesaria, quiero asegurar que el sistema sea seguro y fácil de mantener. También voy a aplicar las mejoras sugeridas en el flujo general del código. Si en algún momento siento que alguna parte no está clara o resulta innecesariamente complicada, podría tener que "ajustar" el enfoque.
+
+
+
+Paso a paso:
+
+Implementación del Command Pattern:
+El Command Pattern permite encapsular solicitudes como objetos, de manera que pueda deshacerme de las largas instrucciones if-else o switch y organizar los comandos de manera más manejable y escalable.
+
+Implementación:
+1. Definición de la interfaz Comando
+2. Clases concretas para cada acción: Cada una de las acciones que el sistema puede realizar (como new, get, etc.) se encapsulará en una clase concreta.
+3. Clase Invocador: El invocador recibirá la instrucción y se encargará de buscar el comando adecuado y ejecutarlo.
+4. Modificaciones en el bucle principal: En lugar de manejar todo el flujo de lógica directamente en el bucle, se delega las responsabilidades al invocador y las clases de comandos.
+
+Comentarios y explicación de cambios:
+* Uso de la clase Comando: Se creó una interfaz base llamada Comando, que tiene el método ejecutar(). Este método es implementado por las clases concretas que representan los diferentes comandos, como ComandoNuevo y ComandoObtener.
+* Clases concretas: En lugar de tener condicionales gigantes dentro del bucle principal, ahora cada clase concreta maneja la lógica específica para cada comando. Esto hace que el código sea más modular y escalable.
+* Invocador: El invocador actúa como intermediario entre las instrucciones ingresadas por el usuario y la ejecución de los comandos. Esto mantiene el bucle principal limpio y manejable.
+* Registro de comandos: Se usa el método registrar_comando() para asociar una instrucción con un comando específico. Luego, el invocador ejecuta el comando correspondiente con ejecutar_comando().
+
+Ventajas del Command Pattern aplicado:
+Modularidad: Cada comando está encapsulado en su propia clase, lo que facilita la lectura y el mantenimiento.
+Extensibilidad: Si deseo agregar más comandos en el futuro, sólo necesito crear una nueva clase de comando sin modificar el flujo principal.
+Escalabilidad: Si en el futuro necesito realizar operaciones más complejas, cada comando puede tener su propia lógica independiente, sin sobrecargar el bucle principal.
+Reutilización: Los comandos pueden reutilizarse en diferentes contextos, si así lo llego a necesitar en el futuro.
+
+
+
