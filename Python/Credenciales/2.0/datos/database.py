@@ -22,16 +22,19 @@ class DataBase:
 		with open(os.path.expanduser(f".\\{self.__nombre_archivo}") if self.__ruta_ubicacion is None else os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}"), 'w') as archivo:
 			json.dump(self.__credenciales, archivo, indent=4, ensure_ascii= False)
 	
-	def obtener_credenciales(self):
-		return None if not self.__credenciales["credenciales"] else {}
+	def database_vacia(self):
+		return True if not self.__credenciales["credenciales"] else False
+
+	def obtener_nombre_archivo(self):
+		return self.__nombre_archivo
 
 	def mostrar_credenciales(self):
-		if not self.__credenciales["credenciales"]:
+		if self.database_vacia():
 			print(f"Data Base '{self.__nombre_archivo}' vacía")
 			return
 		print(f"Data Base '{self.__nombre_archivo}':")
-		for credencial in self.__credenciales["credenciales"]:
-			print(f"Usuario: {credencial['usuario']}, Contraseña: {credencial['contrasena']}")
+		for indice, credencial in enumerate(self.__credenciales["credenciales"]):
+			print(f"Usuario: {credencial['usuario']},\nContraseña: {credencial['contrasena']}", end = "\n" if indice < len(self.__credenciales["credenciales"]) - 1 else "\n-- - -- - -- - -- - -- - -- - -- - -- - --\n")
 	
 	def agregar_credencial(self, usuario="", contrasena=""):
 		if usuario == "":
@@ -47,7 +50,7 @@ class DataBase:
 					print("El nombre de usuario o la contraseña ya existe.")
 					return
 			self.__credenciales["credenciales"].append({"usuario": nueva_credencial.obtener_usuario(), "contrasena": nueva_credencial.obtener_contrasena()})
-			self.guardar_datos()
+			# self.guardar_datos()
 			print(f"Credencial de usuario {usuario} agregada.")
 	
 	def eliminar_credencial(self, usuario="", contrasena=""):
@@ -63,7 +66,7 @@ class DataBase:
 				if credencial["usuario"] == nueva_credencial.obtener_usuario():
 					if credencial["contrasena"] == nueva_credencial.obtener_contrasena():
 						self.__credenciales["credenciales"].remove(credencial)
-						self.guardar_datos()
+						# self.guardar_datos()
 						print(f"Credencial de usuario {usuario} eliminada.")
 					else:
 						print("Los datos ingresados son incorrectos.")
@@ -88,14 +91,12 @@ class DataBase:
 						if usuario_aux != "":
 							nuevo_usuario = nueva_credencial.cifrar(usuario_aux)
 							credencial["usuario"] = nuevo_usuario
-							self.guardar_datos()
 							print(f"Nombre de usuario modificado: {usuario} -> {usuario_aux}")
 						elif contrasena_aux != "":
 							nueva_contrasena = nueva_credencial.cifrar(contrasena_aux)
 							credencial["contrasena"] = nueva_contrasena
-							self.guardar_datos()
 							print(f"Constraseña modificada: {contrasena} -> {contrasena_aux}")
-							
+						# self.guardar_datos()
 						return
 					else:
 						print("Los datos ingresados son incorrectos.")

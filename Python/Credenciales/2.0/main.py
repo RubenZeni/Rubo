@@ -1,11 +1,6 @@
+from error import Error
 import comandos
 import os
-
-class Error(Exception):
-    def __init__(self, tipo, mensaje="Algo falló xd"):
-        self.numero = tipo
-        self.mensaje = mensaje
-        super().__init__(f"ERROR {self.numero}: {self.mensaje}.")
 
 # Bucle principal
 invocador = comandos.Invocador()
@@ -19,6 +14,14 @@ while True:
         if instruccion.lower().startswith("new"):
             invocador.registrar_comando("new", comandos.ComandoNew(instruccion, db))
             db = invocador.ejecutar_comando("new")
+        
+        if instruccion.lower().startswith("load"):
+            invocador.registrar_comando("load", comandos.ComandoLoad(instruccion, db))
+            db = invocador.ejecutar_comando("load")
+        
+        if instruccion.lower().startswith("save"):
+            invocador.registrar_comando("save", comandos.ComandoSave(instruccion, db))
+            db = invocador.ejecutar_comando("save")
 
         elif instruccion.lower().startswith("get"):
             invocador.registrar_comando("get", comandos.ComandoGet(instruccion, db))
