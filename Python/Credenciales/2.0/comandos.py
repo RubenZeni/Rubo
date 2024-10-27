@@ -32,8 +32,17 @@ class ComandoNew(Comando):
 	def ejecutar(self):
 		accion = self.instruccion.removeprefix("new").strip()
 		if accion.lower().startswith("credencial"):
-			print("Se está creando una nueva credencial.")
-			# Lógica para crear una nueva credencial
+			accion = accion.removeprefix("credencial").strip()
+			if accion.lower().startswith("-"):
+				indice = accion.find(" -")
+				if indice >= 0:
+					usuario = accion[1:indice]
+					contrasena = accion[indice+2:]
+					print(f"Usuario: {usuario} | Contraseña: {contrasena}")
+					credencial = Credencial(usuario=usuario, contrasena=contrasena)
+					credencial.cifrar_credencial()
+					print("Credencial creada exitosamente")
+					return credencial
 		elif accion.lower().startswith("database"):
 			if self.db is not None:
 				print(f"Actualmente se está trabajando en la DataBase '{self.db.obtener_nombre_archivo()[:-5]}'. ¿Reemplazar por '{nombre_archivo[:-5]}'? (S/N)")
@@ -42,7 +51,6 @@ class ComandoNew(Comando):
 					if input(". ").lower() == "s":
 						self.db.guardar_datos()
 						print("Datos guardados exitosamente.")
-			print("Se está creando una nueva base de datos.")
 			accion = accion.removeprefix("database").strip()
 			if accion.lower().endswith(".json"):
 				nombre_archivo = accion[1:]
@@ -75,6 +83,7 @@ class ComandoSave(Comando):
 	def ejecutar(self):
 		accion = self.instruccion.removeprefix("save").strip()
 		if accion.lower().startswith("credencial"):
+			accion = accion.removeprefix("credencial").strip()
 			pass
 		elif accion.lower().startswith("database"):
 			accion = accion.removeprefix("database").strip()
@@ -99,7 +108,6 @@ class ComandoGet(Comando):
 			# Lógica para obtener una credencial
 		elif accion.lower().startswith("database"):
 			if self.db is not None:
-				print("Obteniendo base de datos...")
 				self.db.mostrar_credenciales()
 			else:
 				print("No hay base de datos cargada.")

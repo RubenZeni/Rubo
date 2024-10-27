@@ -12,14 +12,18 @@ class DataBase:
 	
 	def cargar_datos(self):
 		try:
-			with open(os.path.expanduser(f".\\{self.__nombre_archivo}") if self.__ruta_ubicacion is None else os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}"), 'r') as archivo:
+			# self.__ruta_ubicacion = input("Ubicación: ") if self.__ruta_ubicacion is None else self.__ruta_ubicacion
+			self.__ruta_ubicacion = ".\\Python\\Credenciales\\2.0\\datos" if self.__ruta_ubicacion is None else self.__ruta_ubicacion
+			with open(os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}"), 'r') as archivo:
 				return json.load(archivo)
 		except FileNotFoundError:
 			print(f"Archivo {self.__nombre_archivo} no encontrado. Creando nuevo archivo.")
 			return {"credenciales": []}
 	
 	def guardar_datos(self):
-		with open(os.path.expanduser(f".\\{self.__nombre_archivo}") if self.__ruta_ubicacion is None else os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}"), 'w') as archivo:
+		# self.__ruta_ubicacion = input("Ubicación: ") if self.__ruta_ubicacion is None else self.__ruta_ubicacion
+		self.__ruta_ubicacion = ".\\Python\\Credenciales\\2.0\\datos" if self.__ruta_ubicacion is None else self.__ruta_ubicacion
+		with open(os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}"), 'w') as archivo:
 			json.dump(self.__credenciales, archivo, indent=4, ensure_ascii= False)
 	
 	def database_vacia(self):
@@ -35,8 +39,21 @@ class DataBase:
 		print(f"Data Base '{self.__nombre_archivo}':")
 		for indice, credencial in enumerate(self.__credenciales["credenciales"]):
 			print(f"Usuario: {credencial['usuario']},\nContraseña: {credencial['contrasena']}", end = "\n" if indice < len(self.__credenciales["credenciales"]) - 1 else "\n-- - -- - -- - -- - -- - -- - -- - -- - --\n")
+
+	def buscar_credencial(self, criterio, valor):
+		for indice, credencial in self.__credenciales["credenciales"]:
+			if credencial[criterio] == valor:
+				return indice
 	
-	def agregar_credencial(self, usuario="", contrasena=""):
+	def agregar_credencial(self, credencial):
+		indice = self.buscar_credencial("usuario", credencial.obtener_usuario())
+		if indice is not None:
+			print("El nombre de usuario ya existe.")
+			return False
+		self.__credenciales["credenciales"].append({"usuario": credencial.obtener_usuario(), "contrasena": credencial.obtener_contrasena()})
+		return True
+
+	"""def agregar_credencial(self, usuario="", contrasena=""):
 		if usuario == "":
 			usuario = input("Usuario: ")
 		if contrasena == "":
@@ -51,7 +68,7 @@ class DataBase:
 					return
 			self.__credenciales["credenciales"].append({"usuario": nueva_credencial.obtener_usuario(), "contrasena": nueva_credencial.obtener_contrasena()})
 			# self.guardar_datos()
-			print(f"Credencial de usuario {usuario} agregada.")
+			print(f"Credencial de usuario {usuario} agregada.")"""
 	
 	def eliminar_credencial(self, usuario="", contrasena=""):
 		if usuario == "":

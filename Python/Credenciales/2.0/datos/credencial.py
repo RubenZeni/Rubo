@@ -101,3 +101,8 @@ class Credencial:
 	
 	def cifrar_contrasena(self):
 		self.__contrasena = self.cifrar(self.__contrasena)
+
+	def cifrar_credencial(self):
+		if self.__usuario != "":
+			self.cifrar_usuario()
+			self.cifrar_contrasena()

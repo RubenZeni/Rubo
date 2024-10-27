@@ -14,14 +14,18 @@ while True:
         if instruccion.lower().startswith("new"):
             invocador.registrar_comando("new", comandos.ComandoNew(instruccion, db))
             db = invocador.ejecutar_comando("new")
+            if not isinstance(db, comandos.DataBase):
+                db = None
         
-        if instruccion.lower().startswith("load"):
+        elif instruccion.lower().startswith("load"):
             invocador.registrar_comando("load", comandos.ComandoLoad(instruccion, db))
             db = invocador.ejecutar_comando("load")
+            if not isinstance(db, comandos.DataBase):
+                db = None
         
-        if instruccion.lower().startswith("save"):
+        elif instruccion.lower().startswith("save"):
             invocador.registrar_comando("save", comandos.ComandoSave(instruccion, db))
-            db = invocador.ejecutar_comando("save")
+            invocador.ejecutar_comando("save")
 
         elif instruccion.lower().startswith("get"):
             invocador.registrar_comando("get", comandos.ComandoGet(instruccion, db))
