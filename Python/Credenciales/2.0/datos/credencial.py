@@ -6,10 +6,8 @@ class ErrorIngresoDatos(Exception):
 
 class Credencial:
 	def __init__(self, usuario="", contrasena=""):
-		if usuario == "":
-			usuario = input("Usuario: ")
-		if contrasena == "":
-			contrasena = input("Contraseña: ")
+		usuario = usuario if usuario != "" else input("Usuario: ")
+		contrasena = contrasena if contrasena != "" else input("Contraseña: ")
 
 		self.__usuario,	self.__contrasena = self.ingresar_datos(usuario, contrasena)
 		self.__codigo = None
@@ -75,6 +73,7 @@ class Credencial:
 					indice -= len(abece) - 1
 				codigo.append(indice)
 			return __generacion(cadena[:-1], registro, codigo)
+		
 		registro = __conteo(cadena)
 		codigo = __generacion(cadena, registro)
 		if recordar:
@@ -84,7 +83,7 @@ class Credencial:
 	def eliminar_codigo(self):
 		self.__codigo = None
 	
-	def cifrar(self, cadena):
+	def cifrar(self, cadena, recordar=False):
 		def __cifrar(cadena, codigo, cifrado=""):
 			abece = "0aAbBc1CdDeEf2FgGhH3i.IjJkK4lLmMn5NñÑoOp6Pq_QrR7sStTuU8vVwWx9-XyYzZ"
 			if cadena == "" and not codigo:
@@ -93,16 +92,17 @@ class Credencial:
 				cifrado += abece[codigo[-1]]
 			return __cifrar(cadena[:-1], codigo[:-1], cifrado)
 		
-		codigo = self.generar_codigo(cadena)
-		return __cifrar(self.__usuario, codigo)
+		codigo = self.generar_codigo(cadena, recordar=recordar)
+		return __cifrar(cadena, codigo)
 	
 	def cifrar_usuario(self):
-		self.__usuario = self.cifrar(self.__usuario)
+		self.__usuario = self.cifrar(self.__usuario, recordar=True)
 	
 	def cifrar_contrasena(self):
-		self.__contrasena = self.cifrar(self.__contrasena)
+		self.__contrasena = self.cifrar(self.__contrasena, recordar=True)
 
 	def cifrar_credencial(self):
 		if self.__usuario != "":
 			self.cifrar_usuario()
 			self.cifrar_contrasena()
+			self.eliminar_codigo()

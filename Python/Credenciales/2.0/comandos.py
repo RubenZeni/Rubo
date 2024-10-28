@@ -6,9 +6,11 @@ class Invocador:
 	def registrar_comando(self, nombre, comando):
 		self.comandos[nombre] = comando
 
-	def ejecutar_comando(self, nombre):
+	def ejecutar_comando(self, nombre, credencial=None):
 		comando = self.comandos.get(nombre)
 		if comando:
+			if credencial is not None:
+				return comando.ejecutar(credencial)
 			return comando.ejecutar()
 		else:
 			print(f"Comando no reconocido: '{nombre}'")
@@ -38,7 +40,6 @@ class ComandoNew(Comando):
 				if indice >= 0:
 					usuario = accion[1:indice]
 					contrasena = accion[indice+2:]
-					print(f"Usuario: {usuario} | Contraseña: {contrasena}")
 					credencial = Credencial(usuario=usuario, contrasena=contrasena)
 					credencial.cifrar_credencial()
 					print("Credencial creada exitosamente")
@@ -72,7 +73,40 @@ class ComandoLoad(Comando):
 		self.db = db
 	
 	def ejecutar(self):
-		pass
+		accion = self.instruccion.removeprefix("load").strip()
+		if accion.lower().startswith("credencial"):
+			"""accion = accion.removeprefix("credencial").strip()
+			if accion.lower().startswith("-"):
+				indice = accion.find(" -")
+				if indice >= 0:
+					usuario = accion[1:indice]
+					contrasena = accion[indice+2:]
+					credencial = Credencial(usuario=usuario, contrasena=contrasena)
+					credencial.cifrar_credencial()
+					print("Credencial creada exitosamente")
+					return credencial"""
+			pass
+		elif accion.lower().startswith("database"):
+			if self.db is not None:
+				print(f"Actualmente se está trabajando en la DataBase '{self.db.obtener_nombre_archivo()[:-5]}'. ¿Reemplazar por '{nombre_archivo[:-5]}'? (S/N)")
+				if input(". ").lower() == "s":
+					print(f"¿Guardar '{self.db.obtener_nombre_archivo()[:-5]}'? (S/N)")
+					if input(". ").lower() == "s":
+						self.db.guardar_datos()
+						print("Datos guardados exitosamente.")
+			accion = accion.removeprefix("database").strip()
+			if accion.lower().endswith(".json"):
+				nombre_archivo = accion[1:]
+				self.db = DataBase(nombre_archivo, carga=True)
+			else:
+				indice = accion.find(".json -")
+				if indice >= 0:
+					nombre_archivo = accion[1:indice+5]
+					ruta_ubicacion = accion[indice+7:]
+					self.db = DataBase(nombre_archivo, ruta_ubicacion, carga=True)
+				else:
+					print("Error en la especificación del archivo.")
+			return self.db
 
 # --------------------------- SAVE ---------------------------
 class ComandoSave(Comando):
@@ -80,20 +114,28 @@ class ComandoSave(Comando):
 		self.instruccion = instruccion
 		self.db = db
 	
-	def ejecutar(self):
+	def ejecutar(self, credencial=None):
 		accion = self.instruccion.removeprefix("save").strip()
 		if accion.lower().startswith("credencial"):
 			accion = accion.removeprefix("credencial").strip()
-			pass
+			if self.db is None:
+				print("No hay Base de Datos cargada.")
+				return
+			if credencial is None:
+				return
+			if self.db.agregar_credencial(credencial):
+				print("Credencial guardada exitosamente.")
 		elif accion.lower().startswith("database"):
 			accion = accion.removeprefix("database").strip()
 			if self.db.database_vacia():
-				print("La DataBase se encuentra vacía. ¿Guardar de todas maneras? (S/N)")
+				print("La Base de Datos se encuentra vacía. ¿Guardar de todas maneras? (S/N)")
 				if input(". ").lower() == "s":
 					self.db.guardar_datos()
 					print("Datos guardados exitosamente.")
 				else:
 					return
+			self.db.guardar_datos()
+			print("Datos guardados exitosamente.")
 
 # --------------------------- GET ---------------------------
 class ComandoGet(Comando):
@@ -110,7 +152,7 @@ class ComandoGet(Comando):
 			if self.db is not None:
 				self.db.mostrar_credenciales()
 			else:
-				print("No hay base de datos cargada.")
+				print("No hay Base de Datos cargada.")
 
 # --------------------------- HELP ---------------------------
 class ComandoHelp(Comando):

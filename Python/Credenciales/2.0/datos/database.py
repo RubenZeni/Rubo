@@ -5,20 +5,31 @@ import string
 from .credencial import Credencial
 
 class DataBase:
-	def __init__(self, nombre_archivo, ruta_ubicacion = None):
+	def __init__(self, nombre_archivo, ruta_ubicacion = None, carga = False):
 		self.__ruta_ubicacion = ruta_ubicacion
 		self.__nombre_archivo = nombre_archivo
-		self.__credenciales = self.cargar_datos()
+		self.__credenciales = self.cargar_datos(carga=carga)
 	
-	def cargar_datos(self):
+	def cargar_datos(self, carga=False):
 		try:
 			# self.__ruta_ubicacion = input("Ubicación: ") if self.__ruta_ubicacion is None else self.__ruta_ubicacion
 			self.__ruta_ubicacion = ".\\Python\\Credenciales\\2.0\\datos" if self.__ruta_ubicacion is None else self.__ruta_ubicacion
 			with open(os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}"), 'r') as archivo:
-				return json.load(archivo)
+				if not carga:
+					print(f"El archivo {self.__nombre_archivo} ya existe. ¿Reemplazar por uno nuevo? (S/N)")
+					if input(". ").lower() == "s":
+						raise FileNotFoundError()
+					else:
+						return {"nulo": True,"credenciales": []}
+				else:
+					papa = json.load(archivo)
+					if "nulo" not in papa:
+						papa["nulo"] = False
+					print(f"Archivo cargado, se trabajará sobre el mismo.")
+					return papa
 		except FileNotFoundError:
-			print(f"Archivo {self.__nombre_archivo} no encontrado. Creando nuevo archivo.")
-			return {"credenciales": []}
+			print(f"Nuevo archivo creado, se trabajará sobre el mismo.")
+			return {"nulo": False,"credenciales": []}
 	
 	def guardar_datos(self):
 		# self.__ruta_ubicacion = input("Ubicación: ") if self.__ruta_ubicacion is None else self.__ruta_ubicacion
@@ -26,6 +37,9 @@ class DataBase:
 		with open(os.path.expanduser(f"{self.__ruta_ubicacion}\\{self.__nombre_archivo}"), 'w') as archivo:
 			json.dump(self.__credenciales, archivo, indent=4, ensure_ascii= False)
 	
+	def database_nula(self):
+		return self.__credenciales["nulo"]
+
 	def database_vacia(self):
 		return True if not self.__credenciales["credenciales"] else False
 
@@ -41,7 +55,7 @@ class DataBase:
 			print(f"Usuario: {credencial['usuario']},\nContraseña: {credencial['contrasena']}", end = "\n" if indice < len(self.__credenciales["credenciales"]) - 1 else "\n-- - -- - -- - -- - -- - -- - -- - -- - --\n")
 
 	def buscar_credencial(self, criterio, valor):
-		for indice, credencial in self.__credenciales["credenciales"]:
+		for indice, credencial in enumerate(self.__credenciales["credenciales"]):
 			if credencial[criterio] == valor:
 				return indice
 	
