@@ -7,7 +7,7 @@ One Dark Pro (temas oscuros)
 Pylance (corrección de python en tiempo real)
 Python (python)
 Python Debugger (ejecutar .py)
-Python Ident (identación de python)
+Python Ident (indentación de python)
 
 Fuente:
 Cascadia Code PL (tiene ligaduras (combinan caracteres en un único símbolo))
