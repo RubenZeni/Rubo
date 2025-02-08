@@ -13,7 +13,7 @@ Fuente:
 Cascadia Code PL (tiene ligaduras (combinan caracteres en un único símbolo))
 
 Configuraciones:
-cursor blinking (activado, extends)
+cursor blinking (activado, expand)
 cursor animation (activado, normal)
 editor.fontLigatures (settings.json, true)
 linked editing (activado (para modificar ambas etiquetas))
